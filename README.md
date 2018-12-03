@@ -12,3 +12,4 @@ Especificação do papel de cada membro (email e telefone):
 
 
 Demais informações:
+Link para o trello - https://trello.com/linaldoleiteferreirajunior/boards
