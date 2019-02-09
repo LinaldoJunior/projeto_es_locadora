@@ -128,34 +128,38 @@ class UsersController extends AppController
             $client['access_attendant'] = 0;
             $client['active'] = 1;
 
-            $parent = $this->Users->get($client_id, [
-//                'contain' => ['Users', 'Users.Users', 'Rentals']
-            ]);
+            $parent = $this->Users->find('all')
+                ->where([
+                'Users.id' => $client_id,
+                'Users.parent_id is' => null
+            ])->first();
+            $childs = $this->Users->find('all')
+                ->where(['Users.parent_id' => $client_id])->toArray();
+
             if ($parent){
 
-                $client['user_id'] = $client_id;
-                debug($parent);
+                $client['parent_id'] = $client_id;
                 $user = $this->Users->patchEntity($user, $client);
 
 
 
-//                if (count($parent['users']) < 3){
-//                    if ($this->Users->save($user)) {
-//                        $this->Flash->success(__('The user has been saved.'));
-//
-//                        return $this->redirect(['action' => 'index']);
-//                    }
-//                    $this->Flash->error(__('The user could not be saved. Please, try again.'));
-//                }
-//                else{
-//                    $this->Flash->error(__('The user could not be saved because you reached the limit of dependents.'));
-//                }
+                if (count($childs) < 3){
+                    if ($this->Users->save($user)) {
+                        $this->Flash->success(__('The user has been saved.'));
+
+                        return $this->redirect(['action' => 'index']);
+                    }
+                    $this->Flash->error(__('The user could not be saved. Please, try again.'));
+                }
+                else{
+                    $this->Flash->error(__('The user could not be saved because you reached the limit of dependents.'));
+                }
 
 
 
             }
             else{
-                $this->Flash->error(__('The parent could not be find. Please, try again.'));
+                $this->Flash->error(__('The parent could not be find or you are a dependent. Please, try again.'));
             }
 
 
