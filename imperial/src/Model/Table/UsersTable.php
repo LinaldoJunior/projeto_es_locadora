@@ -9,7 +9,6 @@ use Cake\Validation\Validator;
 /**
  * Users Model
  *
- * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
  * @property \App\Model\Table\RentalsTable|\Cake\ORM\Association\HasMany $Rentals
  * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\HasMany $Users
  *
@@ -27,6 +26,8 @@ use Cake\Validation\Validator;
 class UsersTable extends Table
 {
 
+
+
     /**
      * Initialize method
      *
@@ -43,15 +44,20 @@ class UsersTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Users', [
-            'foreignKey' => 'user_id'
-        ]);
+//        $this->belongsTo('Users', [
+//            'foreignKey' => 'user_id'
+//        ]);
         $this->hasMany('Rentals', [
             'foreignKey' => 'user_id'
         ]);
         $this->hasMany('Users', [
             'foreignKey' => 'user_id'
         ]);
+//        this->$this->belongsToMany()
+
+        $this->addBehavior('Tree', ['parent_id' => 'user_id']);
+
+
     }
 
     /**

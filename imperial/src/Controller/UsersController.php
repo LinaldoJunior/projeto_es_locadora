@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\TableRegistry;
 
 /**
  * Users Controller
@@ -35,9 +36,17 @@ class UsersController extends AppController
     public function view($id = null)
     {
         $user = $this->Users->get($id, [
-            'contain' => ['Users', 'Rentals']
+//            'contain' => ['Users']
         ]);
 
+        $childs = $this->Users->find('all')
+            ->where(['Users.parent_id' => $id])->toArray();
+
+        $users1 = TableRegistry::get('Users');
+        $users1->recover();
+
+
+        $this->set('dependents', $childs);
         $this->set('user', $user);
     }
 
@@ -60,6 +69,100 @@ class UsersController extends AppController
         }
         $this->set(compact('user'));
     }
+    /**
+     * Add attendant method
+     *
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     */
+    public function addAttendant()
+    {
+        $user = $this->Users->newEntity();
+        if ($this->request->is('post')) {
+            $client = $this->request->getData();
+            $client['access_admin'] = 0;
+            $client['access_attendant'] = 1;
+            $user = $this->Users->patchEntity($user, $client);
+            if ($this->Users->save($user)) {
+                $this->Flash->success(__('The user has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+        }
+        $this->set(compact('user'));
+    }
+    /**
+     * Add client method
+     *
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     */
+    public function addClient()
+    {
+        $user = $this->Users->newEntity();
+        if ($this->request->is('post')) {
+            $client = $this->request->getData();
+            $client['access_admin'] = 0;
+            $client['access_attendant'] = 0;
+            $client['active'] = 1;
+            $user = $this->Users->patchEntity($user, $client);
+            if ($this->Users->save($user)) {
+                $this->Flash->success(__('The user has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+        }
+        $this->set(compact('user'));
+    }
+    /**
+     * Add dependent method
+     *
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     */
+    public function addDependent($client_id = null)
+    {
+        $user = $this->Users->newEntity();
+        if ($this->request->is('post')) {
+            $client = $this->request->getData();
+            $client['access_admin'] = 0;
+            $client['access_attendant'] = 0;
+            $client['active'] = 1;
+
+            $parent = $this->Users->get($client_id, [
+//                'contain' => ['Users', 'Users.Users', 'Rentals']
+            ]);
+            if ($parent){
+
+                $client['user_id'] = $client_id;
+                debug($parent);
+                $user = $this->Users->patchEntity($user, $client);
+
+
+
+//                if (count($parent['users']) < 3){
+//                    if ($this->Users->save($user)) {
+//                        $this->Flash->success(__('The user has been saved.'));
+//
+//                        return $this->redirect(['action' => 'index']);
+//                    }
+//                    $this->Flash->error(__('The user could not be saved. Please, try again.'));
+//                }
+//                else{
+//                    $this->Flash->error(__('The user could not be saved because you reached the limit of dependents.'));
+//                }
+
+
+
+            }
+            else{
+                $this->Flash->error(__('The parent could not be find. Please, try again.'));
+            }
+
+
+        }
+        $this->set(compact('user'));
+    }
+
 
     /**
      * Edit method

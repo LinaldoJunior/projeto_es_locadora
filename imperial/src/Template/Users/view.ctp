@@ -95,7 +95,7 @@
     </div>
     <div class="related">
         <h4><?= __('Related Users') ?></h4>
-        <?php if (!empty($user->users)): ?>
+        <?php if (!empty($dependents)): ?>
         <table cellpadding="0" cellspacing="0">
             <tr>
                 <th scope="col"><?= __('Id') ?></th>
@@ -118,7 +118,7 @@
                 <th scope="col"><?= __('Modified') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
-            <?php foreach ($user->users as $users): ?>
+            <?php foreach ($dependents as $users): ?>
             <tr>
                 <td><?= h($users->id) ?></td>
                 <td><?= h($users->fullname) ?></td>

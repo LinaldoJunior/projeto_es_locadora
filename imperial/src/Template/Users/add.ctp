@@ -28,8 +28,6 @@
             echo $this->Form->control('user_id');
             echo $this->Form->control('address');
             echo $this->Form->control('phone_res');
-            echo $this->Form->control('address_work');
-            echo $this->Form->control('phone_work');
             echo $this->Form->control('cellphone');
             echo $this->Form->control('cpf');
             echo $this->Form->control('birthdate');
