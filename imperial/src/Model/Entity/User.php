@@ -9,8 +9,8 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $fullname
- * @property int|null $access_admin
- * @property int|null $access_attendant
+ * @property bool $access_admin
+ * @property bool $access_attendant
  * @property string $username
  * @property string|null $password
  * @property string $gender
@@ -22,7 +22,7 @@ use Cake\ORM\Entity;
  * @property string|null $cellphone
  * @property string|null $cpf
  * @property \Cake\I18n\FrozenTime $birthdate
- * @property int|null $active
+ * @property bool $active
  * @property \Cake\I18n\FrozenTime|null $created
  * @property \Cake\I18n\FrozenTime|null $modified
  *

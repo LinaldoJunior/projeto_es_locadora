@@ -25,6 +25,34 @@ class UsersController extends AppController
 
         $this->set(compact('users'));
     }
+    /**
+     * Attendats Index method
+     *
+     * @return \Cake\Http\Response|void
+     */
+    public function attendants()
+    {
+        $attendants = $this->Users->find('all')
+            ->where(['Users.access_attendant' => 1]);
+        $users = $this->paginate($attendants);
+
+        $this->set(compact('users'));
+    }
+
+    /**
+     * Clients Index method
+     *
+     * @return \Cake\Http\Response|void
+     */
+    public function clients()
+    {
+        $clients = $this->Users->find('all')
+            ->where(['Users.access_attendant' => 0,
+                'Users.access_admin' => 0]);
+        $users = $this->paginate($clients);
+
+        $this->set(compact('users'));
+    }
 
     /**
      * View method
@@ -203,11 +231,14 @@ class UsersController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
-        if ($this->Users->delete($user)) {
-            $this->Flash->success(__('The user has been deleted.'));
-        } else {
-            $this->Flash->error(__('The user could not be deleted. Please, try again.'));
+
+        $user['active'] = 0;
+        if ($this->Users->save($user)) {
+            $this->Flash->success(__('The user has been disabled.'));
+
+            return $this->redirect(['action' => 'index']);
         }
+        $this->Flash->error(__('The user could not be disabled. Please, try again.'));
 
         return $this->redirect(['action' => 'index']);
     }
