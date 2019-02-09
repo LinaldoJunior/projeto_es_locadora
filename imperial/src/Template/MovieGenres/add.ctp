@@ -6,19 +6,18 @@
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List Movie Genres'), ['action' => 'index']) ?></li>
+        <li class="heading"><?= __('Ações') ?></li>
+        <li><?= $this->Html->link(__('Listar gêneros'), ['action' => 'index']) ?></li>
     </ul>
 </nav>
 <div class="movieGenres form large-9 medium-8 columns content">
     <?= $this->Form->create($movieGenre) ?>
     <fieldset>
-        <legend><?= __('Add Movie Genre') ?></legend>
+        <legend><?= __('Novo Gênero') ?></legend>
         <?php
-            echo $this->Form->control('name');
-            echo $this->Form->control('active');
+            echo $this->Form->control('name', ['label' => 'Nome']);
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->button(__('Salvar')) ?>
     <?= $this->Form->end() ?>
 </div>

@@ -96,11 +96,14 @@ class MovieGenresController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $movieGenre = $this->MovieGenres->get($id);
-        if ($this->MovieGenres->delete($movieGenre)) {
-            $this->Flash->success(__('The movie genre has been deleted.'));
-        } else {
-            $this->Flash->error(__('The movie genre could not be deleted. Please, try again.'));
+
+        $movieGenre['active'] = 0;
+        if ($this->MovieGenres->save($movieGenre)) {
+            $this->Flash->success(__('The movie genre has been disabled.'));
+
+            return $this->redirect(['action' => 'index']);
         }
+        $this->Flash->error(__('The movie genre could not be disabled. Please, try again.'));
 
         return $this->redirect(['action' => 'index']);
     }
