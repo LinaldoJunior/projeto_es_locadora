@@ -48,7 +48,11 @@ class RentalsTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('Users', [
-            'foreignKey' => 'user_id',
+            'foreignKey' => 'client_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('Users', [
+            'foreignKey' => 'attendant_id',
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('MovieMediaTypes', [
@@ -110,7 +114,8 @@ class RentalsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['payment_method_id'], 'PaymentMethods'));
-        $rules->add($rules->existsIn(['user_id'], 'Users'));
+        $rules->add($rules->existsIn(['client_id'], 'Users'));
+        $rules->add($rules->existsIn(['attendant_id'], 'Users'));
         $rules->add($rules->existsIn(['movie_media_type_id'], 'MovieMediaTypes'));
 
         return $rules;

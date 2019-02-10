@@ -96,11 +96,14 @@ class MediaTypesController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $mediaType = $this->MediaTypes->get($id);
-        if ($this->MediaTypes->delete($mediaType)) {
-            $this->Flash->success(__('The media type has been deleted.'));
-        } else {
-            $this->Flash->error(__('The media type could not be deleted. Please, try again.'));
+
+        $mediaType['active'] = 0;
+        if ($this->MediaTypes->save($mediaType)) {
+            $this->Flash->success(__('The media type has been disabled.'));
+
+            return $this->redirect(['action' => 'index']);
         }
+        $this->Flash->error(__('The media type could not be disabled. Please, try again.'));
 
         return $this->redirect(['action' => 'index']);
     }

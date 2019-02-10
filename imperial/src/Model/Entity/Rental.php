@@ -13,7 +13,8 @@ use Cake\ORM\Entity;
  * @property float|null $price
  * @property int $pre_paid
  * @property int $payment_method_id
- * @property int $user_id
+ * @property int client_id
+ * @property int attendant_id
  * @property int|null $finished
  * @property int $movie_media_type_id
  * @property int $active
@@ -43,7 +44,8 @@ class Rental extends Entity
         'price' => true,
         'pre_paid' => true,
         'payment_method_id' => true,
-        'user_id' => true,
+        'client_id' => true,
+        'attendant_id' => true,
         'finished' => true,
         'movie_media_type_id' => true,
         'active' => true,
