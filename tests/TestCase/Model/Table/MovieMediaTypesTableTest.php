@@ -27,7 +27,7 @@ class MovieMediaTypesTableTest extends TestCase
         'app.MovieMediaTypes',
         'app.Movies',
         'app.MediaTypes',
-        'app.Rentals'
+        'app.RentalItems'
     ];
 
     /**

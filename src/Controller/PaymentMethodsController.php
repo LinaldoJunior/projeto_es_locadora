@@ -51,6 +51,7 @@ class PaymentMethodsController extends AppController
         $paymentMethod = $this->PaymentMethods->newEntity();
         if ($this->request->is('post')) {
             $paymentMethod = $this->PaymentMethods->patchEntity($paymentMethod, $this->request->getData());
+            debug($paymentMethod);
             if ($this->PaymentMethods->save($paymentMethod)) {
                 $this->Flash->success(__('The payment method has been saved.'));
 

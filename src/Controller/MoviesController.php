@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller;
-
 use App\Controller\AppController;
+
 
 /**
  * Movies Controller
@@ -38,7 +38,7 @@ class MoviesController extends AppController
     public function view($id = null)
     {
         $movie = $this->Movies->get($id, [
-            'contain' => ['MovieGenres', 'MovieMediaTypes']
+            'contain' => ['MovieGenres', 'MovieMediaTypes', 'MovieMediaTypes.MediaTypes', 'MovieMediaTypes.Movies']
         ]);
 
         $this->set('movie', $movie);

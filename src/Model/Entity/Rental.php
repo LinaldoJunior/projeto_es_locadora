@@ -9,9 +9,9 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property \Cake\I18n\FrozenTime $start_date
  * @property \Cake\I18n\FrozenTime|null $end_date
- * @property \Cake\I18n\FrozenTime|null $return_date
- * @property float|null $pre_paid
+ * @property float $pre_paid
  * @property int $payment_method_id
+ * @property int|null $movie_media_type_id
  * @property int $client_id
  * @property int|null $finished
  * @property int $attendant_id
@@ -21,7 +21,6 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\PaymentMethod $payment_method
  * @property \App\Model\Entity\User $user
- * @property \App\Model\Entity\MovieMediaType $movie_media_type
  */
 class Rental extends Entity
 {
@@ -38,9 +37,9 @@ class Rental extends Entity
     protected $_accessible = [
         'start_date' => true,
         'end_date' => true,
-        'return_date' => true,
         'pre_paid' => true,
         'payment_method_id' => true,
+        'movie_media_type_id' => true,
         'client_id' => true,
         'finished' => true,
         'attendant_id' => true,
@@ -49,6 +48,6 @@ class Rental extends Entity
         'modified' => true,
         'payment_method' => true,
         'user' => true,
-        'movie_media_type' => true
+        'rental_items' => true
     ];
 }

@@ -11,6 +11,8 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\MoviesTable|\Cake\ORM\Association\BelongsTo $Movies
  * @property \App\Model\Table\MediaTypesTable|\Cake\ORM\Association\BelongsTo $MediaTypes
+ * @property \App\Model\Table\RentalItemsTable|\Cake\ORM\Association\HasMany $RentalItems
+ * @property |\Cake\ORM\Association\HasMany $Rentals
  *
  * @method \App\Model\Entity\MovieMediaType get($primaryKey, $options = [])
  * @method \App\Model\Entity\MovieMediaType newEntity($data = null, array $options = [])
@@ -50,6 +52,9 @@ class MovieMediaTypesTable extends Table
             'foreignKey' => 'media_type_id',
             'joinType' => 'INNER'
         ]);
+        $this->hasMany('RentalItems', [
+            'foreignKey' => 'movie_media_type_id'
+        ]);
         $this->hasMany('Rentals', [
             'foreignKey' => 'movie_media_type_id'
         ]);
@@ -73,7 +78,9 @@ class MovieMediaTypesTable extends Table
             ->allowEmptyString('quantity', false);
 
         $validator
-            ->allowEmptyString('active');
+            ->boolean('active')
+            ->requirePresence('active', 'create')
+            ->allowEmptyString('active', false);
 
         return $validator;
     }

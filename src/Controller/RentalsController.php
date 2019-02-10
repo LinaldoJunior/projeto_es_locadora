@@ -39,23 +39,21 @@ class RentalsController extends AppController
     public function view($id = null)
     {
         $rental = $this->Rentals->get($id, [
-            'contain' => ['PaymentMethods', 'Users', 'RentalItems', 'RentalItems.MovieMediaTypes', 'RentalItems.MovieMediaTypes.Movies', 'RentalItems.MovieMediaTypes.MediaTypes']
+            'contain' => ['PaymentMethods', 'Users', 'MovieMediaTypes', 'MovieMediaTypes.Movies', 'MovieMediaTypes.MediaTypes']
         ]);
 
         $saldo = 0;
 
-        foreach ($rental->rental_items as $rental_items):
-
-            $value = $rental_items->movie_media_type->movie->released == 0 ? ($rental_items->quantity * $rental_items->movie_media_type->media_type->price) : $rental_items->quantity * $rental_items->movie_media_type->media_type->price  * 1.5;
-            $saldo = $saldo + $value;
-
-        endforeach;
 
 
-        $interval = $rental->end_date->diff(new DateTime());
-        $dias = $interval->d;
+        $value = $rental->movie_media_type->movie->released == 0 ? ( $rental->movie_media_type->media_type->price) :  $rental->movie_media_type->media_type->price  * 1.5;
+        $saldo = $saldo + $value;
 
-        debug($dias);
+
+        $modify = $rental->movie_media_type->movie->released == 0 ? '+3 days' : '+1 day';
+        $interval = $rental->start_date->modify($modify)->diff(new DateTime());
+        $dias = $interval->days;
+
 
         $multa = $dias != 0 ? ($saldo * $dias) : 0;
 
@@ -73,16 +71,23 @@ class RentalsController extends AppController
     {
         $rental = $this->Rentals->newEntity();
         if ($this->request->is('post')) {
-            $rental = $this->Rentals->patchEntity($rental, $this->request->getData());
-            if ($this->Rentals->save($rental)) {
-                $this->Flash->success(__('The rental has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
+            $ren = $this->request->getData();
+            $ren['attendant_id'] = 2;
+            debug($ren);
+            $rental = $this->Rentals->patchEntity($rental, $ren);
+//            if ($this->Rentals->save($rental)) {
+//                $this->Flash->success(__('The rental has been saved.'));
+//
+//                return $this->redirect(['action' => 'index']);
+//            }
             $this->Flash->error(__('The rental could not be saved. Please, try again.'));
         }
         $paymentMethods = $this->Rentals->PaymentMethods->find('list', ['limit' => 200]);
         $users = $this->Rentals->Users->find('list', ['limit' => 200]);
+        $movieMediaTypes = $this->Rentals->MovieMediaTypes->find('all', [
+            'contain' => ['Movies', 'MediaTypes']
+        ]);
+        debug($movieMediaTypes);
         $this->set(compact('rental', 'paymentMethods', 'users', 'movieMediaTypes'));
     }
 

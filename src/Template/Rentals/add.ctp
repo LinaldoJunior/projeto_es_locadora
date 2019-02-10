@@ -6,33 +6,34 @@
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
+        <li class="heading"><?= __('Ações') ?></li>
         <li><?= $this->Html->link(__('List Rentals'), ['action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('List Payment Methods'), ['controller' => 'PaymentMethods', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Payment Method'), ['controller' => 'PaymentMethods', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Movie Media Types'), ['controller' => 'MovieMediaTypes', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Movie Media Type'), ['controller' => 'MovieMediaTypes', 'action' => 'add']) ?></li>
     </ul>
 </nav>
 <div class="rentals form large-9 medium-8 columns content">
     <?= $this->Form->create($rental) ?>
     <fieldset>
-        <legend><?= __('Add Rental') ?></legend>
+        <legend><?= __('Nova locação') ?></legend>
         <?php
-            echo $this->Form->control('start_date');
-            echo $this->Form->control('end_date', ['empty' => true]);
-            echo $this->Form->control('return_date', ['empty' => true]);
-            echo $this->Form->control('price');
-            echo $this->Form->control('pre_paid');
-            echo $this->Form->control('payment_method_id', ['options' => $paymentMethods]);
-            echo $this->Form->control('user_id', ['options' => $users]);
-            echo $this->Form->control('finished');
-            echo $this->Form->control('movie_media_type_id', ['options' => $movieMediaTypes]);
-            echo $this->Form->control('active');
+            echo $this->Form->control('start_date', ['label' => 'Data inicial']);
+            echo $this->Form->control('pre_paid', ['label' => 'Valor antecipado']);
+            echo $this->Form->control('payment_method_id', ['options' => $paymentMethods, 'label' => 'Método de pagamento']);
+            echo $this->Form->control('client_id', ['options' => $users, 'label' => 'Cliente']);
+
+        $options = [];
+        foreach ($movieMediaTypes as $mv):
+
+            $options[$mv->id] = $mv->movie->name . ' - ' . $mv->media_type->name;
+
+        endforeach;
+        echo $this->Form->control('movie_media_type_id', ['options' => $options, 'label' => 'Filme']);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
     <?= $this->Form->end() ?>
 </div>
+

@@ -89,40 +89,31 @@
         </tr>
     </table>
     <div class="related">
-        <h4><?= __('Itens de locação') ?></h4>
-        <?php if (!empty($rental->rental_items)): ?>
-            <table cellpadding="0" cellspacing="0">
-                <th scope="col"><?= __( '#') ?></th>
-                <th scope="col"><?= __( 'Quantidade') ?></th>
-                <th scope="col"><?= __( 'Nome do filme') ?></th>
-                <th scope="col"><?= __( 'Formato') ?></th>
-                <th scope="col"><?= __( 'Valor total') ?></th>
-                <th scope="col" class="actions"><?= __('Ações') ?></th>
-                </tr>
-                <?php foreach ($rental->rental_items as $rental_items): ?>
-                    <tr>
-                        <td><?= h($rental_items->id) ?></td>
-                        <td><?= h($rental_items->quantity) ?></td>
-                        <td><?= h($rental_items->movie_media_type->movie->name) ?></td>
-                        <td><?= h($rental_items->movie_media_type->media_type->name) ?></td>
+        <h4><?= __('Itens da locação') ?></h4>
+        <table cellpadding="0" cellspacing="0">
+            <th scope="col"><?= __( '#') ?></th>
+            <th scope="col"><?= __( 'Nome do filme') ?></th>
+            <th scope="col"><?= __( 'Formato') ?></th>
+            <th scope="col"><?= __( 'Valor total') ?></th>
+            </tr>
 
-                        <td><?php
-                            $formatter = new NumberFormatter('en_GB',  NumberFormatter::CURRENCY);
-                            $value =$rental_items->movie_media_type->movie->released == 0 ? ($rental_items->quantity * $rental_items->movie_media_type->media_type->price) : $rental_items->quantity * $rental_items->movie_media_type->media_type->price  * 1.5;
-                            echo  $formatter->formatCurrency($this->Number->format($value), 'BRL'), PHP_EOL;
-                            ?>
-                        </td>
+            <tr>
+                <td><?= h($rental->id) ?></td>
+                <td><?= h($rental->movie_media_type->movie->name) ?></td>
+                <td><?= h($rental->movie_media_type->media_type->name) ?></td>
+
+                <td><?php
+                    $formatter = new NumberFormatter('en_GB',  NumberFormatter::CURRENCY);
+                    $value =$rental->movie_media_type->movie->released == 0 ? ( $rental->movie_media_type->media_type->price) :  $rental->movie_media_type->media_type->price  * 1.5;
+                    echo  $formatter->formatCurrency($this->Number->format($value), 'BRL'), PHP_EOL;
+                    ?>
+                </td>
 
 
-                        <td class="actions">
-                            <?= $this->Html->link(__('Visualizar'), ['controller' => 'Users', 'action' => 'view', $rental_items->id]) ?>
-                            <?= $this->Html->link(__('Editar'), ['controller' => 'Users', 'action' => 'edit', $rental_items->id]) ?>
-                            <?= $this->Form->postLink(__('Remover'), ['controller' => 'Users', 'action' => 'delete', $rental_items->id], ['confirm' => __('Are you sure you want to delete # {0}?', $rental_items->id)]) ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </table>
-        <?php endif; ?>
+
+            </tr>
+
+        </table>
     </div>
 </div>
 

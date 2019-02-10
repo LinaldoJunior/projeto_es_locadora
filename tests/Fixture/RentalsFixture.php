@@ -20,10 +20,9 @@ class RentalsFixture extends TestFixture
         'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
         'start_date' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'end_date' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
-        'return_date' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
-        'price' => ['type' => 'decimal', 'length' => 15, 'precision' => 2, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => ''],
-        'pre_paid' => ['type' => 'tinyinteger', 'length' => 4, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null],
+        'pre_paid' => ['type' => 'decimal', 'length' => 15, 'precision' => 2, 'unsigned' => false, 'null' => false, 'default' => '0.00', 'comment' => ''],
         'payment_method_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
+        'movie_media_type_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'client_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'finished' => ['type' => 'tinyinteger', 'length' => 4, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         'attendant_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
@@ -58,18 +57,17 @@ class RentalsFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'start_date' => '2019-02-10 16:35:09',
-                'end_date' => '2019-02-10 16:35:09',
-                'return_date' => '2019-02-10 16:35:09',
-                'price' => 1.5,
-                'pre_paid' => 1,
+                'start_date' => '2019-02-10 22:34:29',
+                'end_date' => '2019-02-10 22:34:29',
+                'pre_paid' => 1.5,
                 'payment_method_id' => 1,
+                'movie_media_type_id' => 1,
                 'client_id' => 1,
                 'finished' => 1,
                 'attendant_id' => 1,
                 'active' => 1,
-                'created' => 1549816509,
-                'modified' => 1549816509
+                'created' => 1549838069,
+                'modified' => 1549838069
             ],
         ];
         parent::init();

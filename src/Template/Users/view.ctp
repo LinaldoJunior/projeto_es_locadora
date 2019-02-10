@@ -29,10 +29,6 @@
             <td><?= h($user->username) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Password') ?></th>
-            <td><?= h($user->password) ?></td>
-        </tr>
-        <tr>
             <th scope="row"><?= __('Gender') ?></th>
             <td><?= h($user->gender) ?></td>
         </tr>
@@ -94,23 +90,14 @@
         <?= $this->Text->autoParagraph(h($user->address_work)); ?>
     </div>
     <div class="related">
-        <h4><?= __('Related Users') ?></h4>
-        <?php if (!empty($dependents)): ?>
+        <h4><?= __('Dependentes') ?></h4>
+        <?php if (!empty($childs)): ?>
         <table cellpadding="0" cellspacing="0">
             <tr>
                 <th scope="col"><?= __('Id') ?></th>
                 <th scope="col"><?= __('Fullname') ?></th>
-                <th scope="col"><?= __('Access Admin') ?></th>
-                <th scope="col"><?= __('Access Attendant') ?></th>
                 <th scope="col"><?= __('Username') ?></th>
-                <th scope="col"><?= __('Password') ?></th>
                 <th scope="col"><?= __('Gender') ?></th>
-                <th scope="col"><?= __('User Id') ?></th>
-                <th scope="col"><?= __('Address') ?></th>
-                <th scope="col"><?= __('Phone Res') ?></th>
-                <th scope="col"><?= __('Address Work') ?></th>
-                <th scope="col"><?= __('Phone Work') ?></th>
-                <th scope="col"><?= __('Cellphone') ?></th>
                 <th scope="col"><?= __('Cpf') ?></th>
                 <th scope="col"><?= __('Birthdate') ?></th>
                 <th scope="col"><?= __('Active') ?></th>
@@ -118,21 +105,12 @@
                 <th scope="col"><?= __('Modified') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
-            <?php foreach ($dependents as $users): ?>
+            <?php foreach ($childs as $users): ?>
             <tr>
                 <td><?= h($users->id) ?></td>
                 <td><?= h($users->fullname) ?></td>
-                <td><?= h($users->access_admin) ?></td>
-                <td><?= h($users->access_attendant) ?></td>
                 <td><?= h($users->username) ?></td>
-                <td><?= h($users->password) ?></td>
                 <td><?= h($users->gender) ?></td>
-                <td><?= h($users->user_id) ?></td>
-                <td><?= h($users->address) ?></td>
-                <td><?= h($users->phone_res) ?></td>
-                <td><?= h($users->address_work) ?></td>
-                <td><?= h($users->phone_work) ?></td>
-                <td><?= h($users->cellphone) ?></td>
                 <td><?= h($users->cpf) ?></td>
                 <td><?= h($users->birthdate) ?></td>
                 <td><?= h($users->active) ?></td>
@@ -149,44 +127,30 @@
         <?php endif; ?>
     </div>
     <div class="related">
-        <h4><?= __('Related Rentals') ?></h4>
-        <?php if (!empty($user->rentals)): ?>
+        <h4><?= __('Histórico de locações') ?></h4>
+        <?php if (!empty($rentals)): ?>
         <table cellpadding="0" cellspacing="0">
             <tr>
                 <th scope="col"><?= __('Id') ?></th>
                 <th scope="col"><?= __('Start Date') ?></th>
                 <th scope="col"><?= __('End Date') ?></th>
-                <th scope="col"><?= __('Return Date') ?></th>
-                <th scope="col"><?= __('Price') ?></th>
                 <th scope="col"><?= __('Pre Paid') ?></th>
                 <th scope="col"><?= __('Payment Method Id') ?></th>
-                <th scope="col"><?= __('User Id') ?></th>
                 <th scope="col"><?= __('Finished') ?></th>
-                <th scope="col"><?= __('Movie Media Type Id') ?></th>
-                <th scope="col"><?= __('Active') ?></th>
-                <th scope="col"><?= __('Created') ?></th>
-                <th scope="col"><?= __('Modified') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
-            <?php foreach ($user->rentals as $rentals): ?>
+            <?php foreach ($rentals as $rental): ?>
             <tr>
-                <td><?= h($rentals->id) ?></td>
-                <td><?= h($rentals->start_date) ?></td>
-                <td><?= h($rentals->end_date) ?></td>
-                <td><?= h($rentals->return_date) ?></td>
-                <td><?= h($rentals->price) ?></td>
-                <td><?= h($rentals->pre_paid) ?></td>
-                <td><?= h($rentals->payment_method_id) ?></td>
-                <td><?= h($rentals->user_id) ?></td>
-                <td><?= h($rentals->finished) ?></td>
-                <td><?= h($rentals->movie_media_type_id) ?></td>
-                <td><?= h($rentals->active) ?></td>
-                <td><?= h($rentals->created) ?></td>
-                <td><?= h($rentals->modified) ?></td>
+                <td><?= h($rental->id) ?></td>
+                <td><?= h($rental->start_date) ?></td>
+                <td><?= h($rental->end_date) ?></td>
+                <td><?= h($rental->pre_paid) ?></td>
+                <td><?= h($rental->payment_method_id) ?></td>
+                <td><?= h($rental->finished) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'Rentals', 'action' => 'view', $rentals->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'Rentals', 'action' => 'edit', $rentals->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Rentals', 'action' => 'delete', $rentals->id], ['confirm' => __('Are you sure you want to delete # {0}?', $rentals->id)]) ?>
+                    <?= $this->Html->link(__('View'), ['controller' => 'Rentals', 'action' => 'view', $rental->id]) ?>
+                    <?= $this->Html->link(__('Edit'), ['controller' => 'Rentals', 'action' => 'edit', $rental->id]) ?>
+                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Rentals', 'action' => 'delete', $rental->id], ['confirm' => __('Are you sure you want to delete # {0}?', $rental->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

@@ -27,7 +27,7 @@ class RentalsTableTest extends TestCase
         'app.Rentals',
         'app.PaymentMethods',
         'app.Users',
-        'app.MovieMediaTypes'
+        'app.RentalItems'
     ];
 
     /**

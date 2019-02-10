@@ -10,9 +10,10 @@ use Cake\Validation\Validator;
  * Rentals Model
  *
  * @property \App\Model\Table\PaymentMethodsTable|\Cake\ORM\Association\BelongsTo $PaymentMethods
+ * @property |\Cake\ORM\Association\BelongsTo $MovieMediaTypes
  * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
  * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
- * @property |\Cake\ORM\Association\HasMany $RentalItems
+ * @property \App\Model\Table\RentalItemsTable|\Cake\ORM\Association\HasMany $RentalItems
  *
  * @method \App\Model\Entity\Rental get($primaryKey, $options = [])
  * @method \App\Model\Entity\Rental newEntity($data = null, array $options = [])
@@ -47,6 +48,9 @@ class RentalsTable extends Table
         $this->belongsTo('PaymentMethods', [
             'foreignKey' => 'payment_method_id',
             'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('MovieMediaTypes', [
+            'foreignKey' => 'movie_media_type_id'
         ]);
         $this->belongsTo('Users', [
             'foreignKey' => 'client_id',
@@ -83,19 +87,15 @@ class RentalsTable extends Table
             ->allowEmptyDateTime('end_date');
 
         $validator
-            ->dateTime('return_date')
-            ->allowEmptyDateTime('return_date');
-
-        $validator
             ->decimal('pre_paid')
-            ->allowEmptyString('pre_paid');
+            ->requirePresence('pre_paid', 'create')
+            ->allowEmptyString('pre_paid', false);
 
         $validator
             ->allowEmptyString('finished');
 
         $validator
             ->boolean('active')
-            ->requirePresence('active', 'create')
             ->allowEmptyString('active', false);
 
         return $validator;
@@ -111,6 +111,7 @@ class RentalsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['payment_method_id'], 'PaymentMethods'));
+        $rules->add($rules->existsIn(['movie_media_type_id'], 'MovieMediaTypes'));
         $rules->add($rules->existsIn(['client_id'], 'Users'));
         $rules->add($rules->existsIn(['attendant_id'], 'Users'));
 

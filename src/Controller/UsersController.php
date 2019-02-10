@@ -14,6 +14,11 @@ use Cake\ORM\TableRegistry;
 class UsersController extends AppController
 {
 
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadModel('Rentals');
+    }
     /**
      * Index method
      *
@@ -21,8 +26,8 @@ class UsersController extends AppController
      */
     public function index()
     {
+//        $this->viewBuilder()->setLayout('home');
         $users = $this->paginate($this->Users);
-
         $this->set(compact('users'));
     }
     /**
@@ -63,19 +68,21 @@ class UsersController extends AppController
      */
     public function view($id = null)
     {
-        $user = $this->Users->get($id, [
-//            'contain' => ['Users']
-        ]);
+        $user = $this->Users->get($id);
+
 
         $childs = $this->Users->find('all')
+
             ->where(['Users.parent_id' => $id])->toArray();
 
         $users1 = TableRegistry::get('Users');
         $users1->recover();
 
+        $rentals = $this->Rentals->find('all')->where([
+            'Rentals.client_id' => $id
+        ]);
 
-        $this->set('dependents', $childs);
-        $this->set('user', $user);
+        $this->set(compact('dependents', 'childs', 'user', 'rentals'));
     }
 
     /**

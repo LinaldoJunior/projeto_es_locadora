@@ -10,12 +10,13 @@ use Cake\ORM\Entity;
  * @property int $movie_id
  * @property int $media_type_id
  * @property int $quantity
- * @property int|null $active
+ * @property bool $active
  * @property \Cake\I18n\FrozenTime|null $created
  * @property \Cake\I18n\FrozenTime|null $modified
  *
  * @property \App\Model\Entity\Movie $movie
  * @property \App\Model\Entity\MediaType $media_type
+ * @property \App\Model\Entity\RentalItem[] $rental_items
  */
 class MovieMediaType extends Entity
 {
@@ -38,6 +39,6 @@ class MovieMediaType extends Entity
         'modified' => true,
         'movie' => true,
         'media_type' => true,
-        'rentals' => true
+        'rental_items' => true
     ];
 }
