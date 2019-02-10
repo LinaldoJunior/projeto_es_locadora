@@ -96,11 +96,14 @@ class PaymentMethodsController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $paymentMethod = $this->PaymentMethods->get($id);
-        if ($this->PaymentMethods->delete($paymentMethod)) {
-            $this->Flash->success(__('The payment method has been deleted.'));
-        } else {
-            $this->Flash->error(__('The payment method could not be deleted. Please, try again.'));
+
+        $paymentMethod['active'] = 0;
+        if ($this->PaymentMethods->save($paymentMethod)) {
+            $this->Flash->success(__('The payment method has been disabled.'));
+
+            return $this->redirect(['action' => 'index']);
         }
+        $this->Flash->error(__('The payment method could not be disabled. Please, try again.'));
 
         return $this->redirect(['action' => 'index']);
     }

@@ -6,27 +6,24 @@
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
+        <li class="heading"><?= __('Ações') ?></li>
         <li><?= $this->Form->postLink(
-                __('Delete'),
+                __('Desativar'),
                 ['action' => 'delete', $paymentMethod->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $paymentMethod->id)]
+                ['confirm' => __('Certeza que deseja desativar # {0}?', $paymentMethod->id)]
             )
         ?></li>
-        <li><?= $this->Html->link(__('List Payment Methods'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Rentals'), ['controller' => 'Rentals', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Rental'), ['controller' => 'Rentals', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('Listar métodos de pagamentos'), ['action' => 'index']) ?></li>
     </ul>
 </nav>
 <div class="paymentMethods form large-9 medium-8 columns content">
     <?= $this->Form->create($paymentMethod) ?>
     <fieldset>
-        <legend><?= __('Edit Payment Method') ?></legend>
+        <legend><?= __('Editar método de pagamento') ?></legend>
         <?php
-            echo $this->Form->control('name');
-            echo $this->Form->control('active');
+            echo $this->Form->control('name', ['label' => 'Nome']);
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->button(__('Salvar')) ?>
     <?= $this->Form->end() ?>
 </div>

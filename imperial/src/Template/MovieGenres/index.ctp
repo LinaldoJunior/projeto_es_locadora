@@ -34,7 +34,7 @@
                 <td class="actions">
                     <?= $this->Html->link(__('Visualizar'), ['action' => 'view', $movieGenre->id]) ?>
                     <?= $this->Html->link(__('Editar'), ['action' => 'edit', $movieGenre->id]) ?>
-                    <?= $this->Form->postLink(__('Desativar'), ['action' => 'delete', $movieGenre->id], ['confirm' => __('Are you sure you want to delete # {0}?', $movieGenre->id)]) ?>
+                    <?= $this->Form->postLink(__('Desativar'), ['action' => 'delete', $movieGenre->id], ['confirm' => __('Você tem certeza que deseja desativar  # {0}?', $movieGenre->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
