@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use DateTime;
 
 /**
  * Rentals Controller
@@ -21,7 +22,7 @@ class RentalsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['PaymentMethods', 'Users', 'MovieMediaTypes']
+            'contain' => ['PaymentMethods', 'Users']
         ];
         $rentals = $this->paginate($this->Rentals);
 
@@ -38,10 +39,29 @@ class RentalsController extends AppController
     public function view($id = null)
     {
         $rental = $this->Rentals->get($id, [
-            'contain' => ['PaymentMethods', 'Users', 'MovieMediaTypes']
+            'contain' => ['PaymentMethods', 'Users', 'RentalItems', 'RentalItems.MovieMediaTypes', 'RentalItems.MovieMediaTypes.Movies', 'RentalItems.MovieMediaTypes.MediaTypes']
         ]);
 
-        $this->set('rental', $rental);
+        $saldo = 0;
+
+        foreach ($rental->rental_items as $rental_items):
+
+            $value = $rental_items->movie_media_type->movie->released == 0 ? ($rental_items->quantity * $rental_items->movie_media_type->media_type->price) : $rental_items->quantity * $rental_items->movie_media_type->media_type->price  * 1.5;
+            $saldo = $saldo + $value;
+
+        endforeach;
+
+
+        $interval = $rental->end_date->diff(new DateTime());
+        $dias = $interval->d;
+
+        debug($dias);
+
+        $multa = $dias != 0 ? ($saldo * $dias) : 0;
+
+        $total = $saldo + $multa - $rental->pre_paid;
+
+        $this->set(compact('rental', 'saldo', 'dias', 'multa', 'total'));
     }
 
     /**
@@ -63,7 +83,6 @@ class RentalsController extends AppController
         }
         $paymentMethods = $this->Rentals->PaymentMethods->find('list', ['limit' => 200]);
         $users = $this->Rentals->Users->find('list', ['limit' => 200]);
-        $movieMediaTypes = $this->Rentals->MovieMediaTypes->find('list', ['limit' => 200]);
         $this->set(compact('rental', 'paymentMethods', 'users', 'movieMediaTypes'));
     }
 
@@ -90,8 +109,7 @@ class RentalsController extends AppController
         }
         $paymentMethods = $this->Rentals->PaymentMethods->find('list', ['limit' => 200]);
         $users = $this->Rentals->Users->find('list', ['limit' => 200]);
-        $movieMediaTypes = $this->Rentals->MovieMediaTypes->find('list', ['limit' => 200]);
-        $this->set(compact('rental', 'paymentMethods', 'users', 'movieMediaTypes'));
+        $this->set(compact('rental', 'paymentMethods', 'users'));
     }
 
     /**

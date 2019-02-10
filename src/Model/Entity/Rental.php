@@ -10,14 +10,12 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $start_date
  * @property \Cake\I18n\FrozenTime|null $end_date
  * @property \Cake\I18n\FrozenTime|null $return_date
- * @property float|null $price
- * @property int $pre_paid
+ * @property float|null $pre_paid
  * @property int $payment_method_id
- * @property int client_id
- * @property int attendant_id
+ * @property int $client_id
  * @property int|null $finished
- * @property int $movie_media_type_id
- * @property int $active
+ * @property int $attendant_id
+ * @property bool $active
  * @property \Cake\I18n\FrozenTime|null $created
  * @property \Cake\I18n\FrozenTime|null $modified
  *
@@ -41,13 +39,11 @@ class Rental extends Entity
         'start_date' => true,
         'end_date' => true,
         'return_date' => true,
-        'price' => true,
         'pre_paid' => true,
         'payment_method_id' => true,
         'client_id' => true,
-        'attendant_id' => true,
         'finished' => true,
-        'movie_media_type_id' => true,
+        'attendant_id' => true,
         'active' => true,
         'created' => true,
         'modified' => true,

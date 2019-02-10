@@ -11,7 +11,8 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\PaymentMethodsTable|\Cake\ORM\Association\BelongsTo $PaymentMethods
  * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
- * @property \App\Model\Table\MovieMediaTypesTable|\Cake\ORM\Association\BelongsTo $MovieMediaTypes
+ * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
+ * @property |\Cake\ORM\Association\HasMany $RentalItems
  *
  * @method \App\Model\Entity\Rental get($primaryKey, $options = [])
  * @method \App\Model\Entity\Rental newEntity($data = null, array $options = [])
@@ -55,9 +56,8 @@ class RentalsTable extends Table
             'foreignKey' => 'attendant_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('MovieMediaTypes', [
-            'foreignKey' => 'movie_media_type_id',
-            'joinType' => 'INNER'
+        $this->hasMany('RentalItems', [
+            'foreignKey' => 'rental_id'
         ]);
     }
 
@@ -87,17 +87,14 @@ class RentalsTable extends Table
             ->allowEmptyDateTime('return_date');
 
         $validator
-            ->decimal('price')
-            ->allowEmptyString('price');
-
-        $validator
-            ->requirePresence('pre_paid', 'create')
-            ->allowEmptyString('pre_paid', false);
+            ->decimal('pre_paid')
+            ->allowEmptyString('pre_paid');
 
         $validator
             ->allowEmptyString('finished');
 
         $validator
+            ->boolean('active')
             ->requirePresence('active', 'create')
             ->allowEmptyString('active', false);
 
@@ -116,7 +113,6 @@ class RentalsTable extends Table
         $rules->add($rules->existsIn(['payment_method_id'], 'PaymentMethods'));
         $rules->add($rules->existsIn(['client_id'], 'Users'));
         $rules->add($rules->existsIn(['attendant_id'], 'Users'));
-        $rules->add($rules->existsIn(['movie_media_type_id'], 'MovieMediaTypes'));
 
         return $rules;
     }

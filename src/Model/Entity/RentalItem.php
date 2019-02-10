@@ -4,20 +4,20 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * MovieMediaType Entity
+ * RentalItem Entity
  *
  * @property int $id
- * @property int $movie_id
- * @property int $media_type_id
+ * @property int $rental_id
+ * @property int $movie_media_type_id
  * @property int $quantity
- * @property int|null $active
+ * @property int $active
  * @property \Cake\I18n\FrozenTime|null $created
  * @property \Cake\I18n\FrozenTime|null $modified
  *
- * @property \App\Model\Entity\Movie $movie
- * @property \App\Model\Entity\MediaType $media_type
+ * @property \App\Model\Entity\Rental $rental
+ * @property \App\Model\Entity\MovieMediaType $movie_media_type
  */
-class MovieMediaType extends Entity
+class RentalItem extends Entity
 {
 
     /**
@@ -30,14 +30,13 @@ class MovieMediaType extends Entity
      * @var array
      */
     protected $_accessible = [
-        'movie_id' => true,
-        'media_type_id' => true,
+        'rental_id' => true,
+        'movie_media_type_id' => true,
         'quantity' => true,
         'active' => true,
         'created' => true,
         'modified' => true,
-        'movie' => true,
-        'media_type' => true,
-        'rentals' => true
+        'rental' => true,
+        'movie_media_type' => true
     ];
 }

@@ -11,7 +11,6 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\MoviesTable|\Cake\ORM\Association\BelongsTo $Movies
  * @property \App\Model\Table\MediaTypesTable|\Cake\ORM\Association\BelongsTo $MediaTypes
- * @property \App\Model\Table\RentalsTable|\Cake\ORM\Association\HasMany $Rentals
  *
  * @method \App\Model\Entity\MovieMediaType get($primaryKey, $options = [])
  * @method \App\Model\Entity\MovieMediaType newEntity($data = null, array $options = [])
