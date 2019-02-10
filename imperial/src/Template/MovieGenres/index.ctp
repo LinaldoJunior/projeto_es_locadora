@@ -20,7 +20,7 @@
                 <th scope="col"><?= $this->Paginator->sort('active', ['label' => 'Ativo']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('created', ['label' => 'Cadastrado em']) ?></th>
 
-                <th scope="col" class="actions"><?= __('Actions', ['label' => 'Ações']) ?></th>
+                <th scope="col" class="actions"><?= __('Ações') ?></th>
             </tr>
         </thead>
         <tbody>
@@ -34,7 +34,15 @@
                 <td class="actions">
                     <?= $this->Html->link(__('Visualizar'), ['action' => 'view', $movieGenre->id]) ?>
                     <?= $this->Html->link(__('Editar'), ['action' => 'edit', $movieGenre->id]) ?>
-                    <?= $this->Form->postLink(__('Desativar'), ['action' => 'delete', $movieGenre->id], ['confirm' => __('Você tem certeza que deseja desativar  # {0}?', $movieGenre->id)]) ?>
+                    <?php
+                    if ($movieGenre->active == 0){
+                        echo $this->Form->postLink(__('Reativar'), ['action' => 'active', $movieGenre->id], ['confirm' => __('Você tem certeza que deseja reativar # {0}?', $movieGenre->id)]);
+                    }
+                    else{
+                        echo $this->Form->postLink(__('Desativar'), ['action' => 'delete', $movieGenre->id], ['confirm' => __('Você tem certeza que deseja desativar # {0}?', $movieGenre->id)]);
+                    }
+
+                    ?>
                 </td>
             </tr>
             <?php endforeach; ?>

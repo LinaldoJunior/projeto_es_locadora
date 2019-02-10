@@ -107,4 +107,26 @@ class MediaTypesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+    /**
+     * Active method
+     *
+     * @param string|null $id Media Type id.
+     * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function active($id = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+        $mediaType = $this->MediaTypes->get($id);
+
+        $mediaType['active'] = 1;
+        if ($this->MediaTypes->save($mediaType)) {
+            $this->Flash->success(__('The media type has been enabled.'));
+
+            return $this->redirect(['action' => 'index']);
+        }
+        $this->Flash->error(__('The media type could not be enabled. Please, try again.'));
+
+        return $this->redirect(['action' => 'index']);
+    }
 }

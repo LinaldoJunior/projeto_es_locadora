@@ -99,13 +99,41 @@ class MoviesController extends AppController
      */
     public function delete($id = null)
     {
+
         $this->request->allowMethod(['post', 'delete']);
         $movie = $this->Movies->get($id);
-        if ($this->Movies->delete($movie)) {
-            $this->Flash->success(__('The movie has been deleted.'));
-        } else {
-            $this->Flash->error(__('The movie could not be deleted. Please, try again.'));
+
+        $movie['active'] = 0;
+        if ($this->Movies->save($movie)) {
+            $this->Flash->success(__('The movie has been disabled.'));
+
+            return $this->redirect(['action' => 'index']);
         }
+        $this->Flash->error(__('The movie could not be disabled. Please, try again.'));
+
+        return $this->redirect(['action' => 'index']);
+    }
+
+    /**
+     * Delete method
+     *
+     * @param string|null $id Movie id.
+     * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function active($id = null)
+    {
+
+        $this->request->allowMethod(['post', 'delete']);
+        $movie = $this->Movies->get($id);
+
+        $movie['active'] = 1;
+        if ($this->Movies->save($movie)) {
+            $this->Flash->success(__('The movie has been enabled.'));
+
+            return $this->redirect(['action' => 'index']);
+        }
+        $this->Flash->error(__('The movie could not be enabled. Please, try again.'));
 
         return $this->redirect(['action' => 'index']);
     }

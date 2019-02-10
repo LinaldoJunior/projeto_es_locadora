@@ -105,11 +105,36 @@ class RentalsController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $rental = $this->Rentals->get($id);
-        if ($this->Rentals->delete($rental)) {
-            $this->Flash->success(__('The rental has been deleted.'));
-        } else {
-            $this->Flash->error(__('The rental could not be deleted. Please, try again.'));
+
+        $rental['active'] = 0;
+        if ($this->Rentals->save($rental)) {
+            $this->Flash->success(__('The rental has been disabled.'));
+
+            return $this->redirect(['action' => 'index']);
         }
+        $this->Flash->error(__('The rental could not be disabled. Please, try again.'));
+
+        return $this->redirect(['action' => 'index']);
+    }
+    /**
+     * Active method
+     *
+     * @param string|null $id Rental id.
+     * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function active($id = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+        $rental = $this->Rentals->get($id);
+
+        $rental['active'] = 1;
+        if ($this->Rentals->save($rental)) {
+            $this->Flash->success(__('The rental has been enabled.'));
+
+            return $this->redirect(['action' => 'index']);
+        }
+        $this->Flash->error(__('The rental could not be enabled. Please, try again.'));
 
         return $this->redirect(['action' => 'index']);
     }

@@ -106,5 +106,29 @@ class PaymentMethodsController extends AppController
         $this->Flash->error(__('The payment method could not be disabled. Please, try again.'));
 
         return $this->redirect(['action' => 'index']);
+
+    }
+    /**
+     * Delete method
+     *
+     * @param string|null $id Payment Method id.
+     * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function active($id = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+        $paymentMethod = $this->PaymentMethods->get($id);
+
+        $paymentMethod['active'] = 1;
+        if ($this->PaymentMethods->save($paymentMethod)) {
+            $this->Flash->success(__('The payment method has been enabled.'));
+
+            return $this->redirect(['action' => 'index']);
+        }
+        $this->Flash->error(__('The payment method could not be enabled. Please, try again.'));
+
+        return $this->redirect(['action' => 'index']);
+
     }
 }

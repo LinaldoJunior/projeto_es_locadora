@@ -9,7 +9,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $movie_id
  * @property int $media_type_id
- * @property int $quatity
+ * @property int $quantity
  * @property int|null $active
  * @property \Cake\I18n\FrozenTime|null $created
  * @property \Cake\I18n\FrozenTime|null $modified
@@ -33,7 +33,7 @@ class MovieMediaType extends Entity
     protected $_accessible = [
         'movie_id' => true,
         'media_type_id' => true,
-        'quatity' => true,
+        'quantity' => true,
         'active' => true,
         'created' => true,
         'modified' => true,

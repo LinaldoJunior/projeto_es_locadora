@@ -6,32 +6,32 @@
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List Movies'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Movie Genres'), ['controller' => 'MovieGenres', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Movie Genre'), ['controller' => 'MovieGenres', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Movie Media Types'), ['controller' => 'MovieMediaTypes', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Movie Media Type'), ['controller' => 'MovieMediaTypes', 'action' => 'add']) ?></li>
+        <li class="heading"><?= __('Ações') ?></li>
+        <li><?= $this->Html->link(__('Listar filmes'), ['action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('Listar gêneros'), ['controller' => 'MovieGenres', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('Novo gênero'), ['controller' => 'MovieGenres', 'action' => 'add']) ?></li>
     </ul>
 </nav>
 <div class="movies form large-9 medium-8 columns content">
     <?= $this->Form->create($movie) ?>
     <fieldset>
-        <legend><?= __('Add Movie') ?></legend>
+        <legend><?= __('Novo filme') ?></legend>
         <?php
-            echo $this->Form->control('name');
-            echo $this->Form->control('director');
-            echo $this->Form->control('year', ['empty' => true]);
-            echo $this->Form->control('movie_gender_id', ['options' => $movieGenres]);
-            echo $this->Form->control('grade');
-            echo $this->Form->control('duration');
-            echo $this->Form->control('cast');
-            echo $this->Form->control('sinopse');
-            echo $this->Form->control('released');
-            echo $this->Form->control('poster');
-            echo $this->Form->control('active');
+            echo $this->Form->control('name',  ['label' => 'Nome']);
+            echo $this->Form->control('director',  ['label' => 'Diretor']);
+            echo $this->Form->control('year', ['empty' => true, 'label' => 'Ano']);
+            echo $this->Form->control('movie_gender_id', ['options' => $movieGenres, 'label' => 'Gênero']);
+            echo $this->Form->control('grade',  ['label' => 'Avaliação']);
+            echo $this->Form->control('duration',  ['label' => 'Duração']);
+            echo $this->Form->control('cast',  ['label' => 'Elenco']);
+            echo $this->Form->control('sinopse',  ['label' => 'Sinopse']);
+            echo $this->Form->control('released',  ['label' => 'Lançamento', 'options' => array(
+                1 => __('Sim'),
+                0 => __('Não')
+            )]);
+            echo $this->Form->control('poster',  ['label' => 'Cartaz']);
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->button(__('Salvar')) ?>
     <?= $this->Form->end() ?>
 </div>

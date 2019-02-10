@@ -101,14 +101,42 @@ class MovieMediaTypesController extends AppController
      */
     public function delete($id = null)
     {
+
         $this->request->allowMethod(['post', 'delete']);
         $movieMediaType = $this->MovieMediaTypes->get($id);
-        if ($this->MovieMediaTypes->delete($movieMediaType)) {
-            $this->Flash->success(__('The movie media type has been deleted.'));
-        } else {
-            $this->Flash->error(__('The movie media type could not be deleted. Please, try again.'));
+
+        $movieMediaType['active'] = 0;
+        if ($this->MovieMediaTypes->save($movieMediaType)) {
+            $this->Flash->success(__('The movie media type has been disabled.'));
+
+            return $this->redirect(['action' => 'index']);
         }
+        $this->Flash->error(__('The movie media type could not be disabled. Please, try again.'));
 
         return $this->redirect(['action' => 'index']);
     }
+    /**
+     * Active method
+     *
+     * @param string|null $id Movie Media Type id.
+     * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function active($id = null)
+    {
+
+        $this->request->allowMethod(['post', 'put']);
+        $movieMediaType = $this->MovieMediaTypes->get($id);
+
+        $movieMediaType['active'] = 1;
+        if ($this->MovieMediaTypes->save($movieMediaType)) {
+            $this->Flash->success(__('The movie media type has been enabled.'));
+
+            return $this->redirect(['action' => 'index']);
+        }
+        $this->Flash->error(__('The movie media type could not be enabled. Please, try again.'));
+
+        return $this->redirect(['action' => 'index']);
+    }
+
 }

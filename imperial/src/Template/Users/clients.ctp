@@ -20,7 +20,7 @@
                 <th scope="col"><?= $this->Paginator->sort('username', ['label' => 'E-mail']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('active', ['label' => 'Ativo']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('created', ['label' => 'Data de criação']) ?></th>
-                <th scope="col" class="actions"><?= __('Actions', ['label' => 'Ações']) ?></th>
+                <th scope="col" class="actions"><?= __('Ações') ?></th>
             </tr>
         </thead>
         <tbody>
@@ -34,7 +34,15 @@
                 <td class="actions">
                     <?= $this->Html->link(__('Visualizar'), ['action' => 'view', $user->id]) ?>
                     <?= $this->Html->link(__('Editar'), ['action' => 'edit', $user->id]) ?>
-                    <?= $this->Form->postLink(__('Apagar'), ['action' => 'delete', $user->id], ['confirm' => __('Certeza que deseja desativar # {0}?', $user->id)]) ?>
+                    <?php
+                    if ($user->active == 0){
+                        echo $this->Form->postLink(__('Reativar'), ['action' => 'active', $user->id], ['confirm' => __('Você tem certeza que deseja reativar # {0}?', $user->id)]);
+                    }
+                    else{
+                        echo $this->Form->postLink(__('Desativar'), ['action' => 'delete', $user->id], ['confirm' => __('Você tem certeza que deseja desativar # {0}?', $user->id)]);
+                    }
+
+                    ?>
                 </td>
             </tr>
             <?php endforeach; ?>

@@ -69,9 +69,9 @@ class MovieMediaTypesTable extends Table
             ->allowEmptyString('id', 'create');
 
         $validator
-            ->integer('quatity')
-            ->requirePresence('quatity', 'create')
-            ->allowEmptyString('quatity', false);
+            ->integer('quantity')
+            ->requirePresence('quantity', 'create')
+            ->allowEmptyString('quantity', false);
 
         $validator
             ->allowEmptyString('active');

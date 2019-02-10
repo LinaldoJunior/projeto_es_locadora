@@ -242,4 +242,27 @@ class UsersController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+    /**
+     * Active method
+     *
+     * @param string|null $id User id.
+     * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function active($id = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+        $user = $this->Users->get($id);
+
+        $user['active'] = 0;
+        if ($this->Users->save($user)) {
+            $this->Flash->success(__('The user has been enabled.'));
+
+            return $this->redirect(['action' => 'index']);
+        }
+        $this->Flash->error(__('The user could not be enabled. Please, try again.'));
+
+        return $this->redirect(['action' => 'index']);
+    }
+
 }
