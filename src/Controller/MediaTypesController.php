@@ -12,6 +12,11 @@ use App\Controller\AppController;
  */
 class MediaTypesController extends AppController
 {
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('Auth');
+    }
 
     /**
      * Index method
@@ -20,9 +25,25 @@ class MediaTypesController extends AppController
      */
     public function index()
     {
-        $mediaTypes = $this->paginate($this->MediaTypes);
 
-        $this->set(compact('mediaTypes'));
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin']){
+
+                $mediaTypes = $this->paginate($this->MediaTypes);
+
+                $this->set(compact('mediaTypes'));
+
+            }
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
+        }
+        else{
+            return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+        }
     }
 
     /**
@@ -34,11 +55,28 @@ class MediaTypesController extends AppController
      */
     public function view($id = null)
     {
-        $mediaType = $this->MediaTypes->get($id, [
-            'contain' => ['MovieMediaTypes']
-        ]);
 
-        $this->set('mediaType', $mediaType);
+
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin']){
+
+                $mediaType = $this->MediaTypes->get($id, [
+                    'contain' => ['MovieMediaTypes']
+                ]);
+
+                $this->set('mediaType', $mediaType);
+
+            }
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
+        }
+        else{
+            return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+        }
     }
 
     /**
@@ -48,17 +86,34 @@ class MediaTypesController extends AppController
      */
     public function add()
     {
-        $mediaType = $this->MediaTypes->newEntity();
-        if ($this->request->is('post')) {
-            $mediaType = $this->MediaTypes->patchEntity($mediaType, $this->request->getData());
-            if ($this->MediaTypes->save($mediaType)) {
-                $this->Flash->success(__('The media type has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin']){
+
+                $mediaType = $this->MediaTypes->newEntity();
+                if ($this->request->is('post')) {
+                    $mediaType = $this->MediaTypes->patchEntity($mediaType, $this->request->getData());
+                    if ($this->MediaTypes->save($mediaType)) {
+                        $this->Flash->success(__('The media type has been saved.'));
+
+                        return $this->redirect(['action' => 'index']);
+                    }
+                    $this->Flash->error(__('The media type could not be saved. Please, try again.'));
+                }
+                $this->set(compact('mediaType'));
+
             }
-            $this->Flash->error(__('The media type could not be saved. Please, try again.'));
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
         }
-        $this->set(compact('mediaType'));
+        else{
+            return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+        }
     }
 
     /**
@@ -70,19 +125,36 @@ class MediaTypesController extends AppController
      */
     public function edit($id = null)
     {
-        $mediaType = $this->MediaTypes->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $mediaType = $this->MediaTypes->patchEntity($mediaType, $this->request->getData());
-            if ($this->MediaTypes->save($mediaType)) {
-                $this->Flash->success(__('The media type has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin']){
+
+                $mediaType = $this->MediaTypes->get($id, [
+                    'contain' => []
+                ]);
+                if ($this->request->is(['patch', 'post', 'put'])) {
+                    $mediaType = $this->MediaTypes->patchEntity($mediaType, $this->request->getData());
+                    if ($this->MediaTypes->save($mediaType)) {
+                        $this->Flash->success(__('The media type has been saved.'));
+
+                        return $this->redirect(['action' => 'index']);
+                    }
+                    $this->Flash->error(__('The media type could not be saved. Please, try again.'));
+                }
+                $this->set(compact('mediaType'));
+
             }
-            $this->Flash->error(__('The media type could not be saved. Please, try again.'));
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
         }
-        $this->set(compact('mediaType'));
+        else{
+            return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+        }
     }
 
     /**
@@ -94,18 +166,35 @@ class MediaTypesController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $mediaType = $this->MediaTypes->get($id);
 
-        $mediaType['active'] = 0;
-        if ($this->MediaTypes->save($mediaType)) {
-            $this->Flash->success(__('The media type has been disabled.'));
 
-            return $this->redirect(['action' => 'index']);
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin']){
+
+                $this->request->allowMethod(['post', 'delete']);
+                $mediaType = $this->MediaTypes->get($id);
+
+                $mediaType['active'] = 0;
+                if ($this->MediaTypes->save($mediaType)) {
+                    $this->Flash->success(__('The media type has been disabled.'));
+
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('The media type could not be disabled. Please, try again.'));
+
+                return $this->redirect(['action' => 'index']);
+
+            }
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
         }
-        $this->Flash->error(__('The media type could not be disabled. Please, try again.'));
-
-        return $this->redirect(['action' => 'index']);
+        else{
+            return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+        }
     }
     /**
      * Active method
@@ -116,17 +205,34 @@ class MediaTypesController extends AppController
      */
     public function active($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $mediaType = $this->MediaTypes->get($id);
 
-        $mediaType['active'] = 1;
-        if ($this->MediaTypes->save($mediaType)) {
-            $this->Flash->success(__('The media type has been enabled.'));
 
-            return $this->redirect(['action' => 'index']);
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin']){
+
+                $this->request->allowMethod(['post', 'delete']);
+                $mediaType = $this->MediaTypes->get($id);
+
+                $mediaType['active'] = 1;
+                if ($this->MediaTypes->save($mediaType)) {
+                    $this->Flash->success(__('The media type has been enabled.'));
+
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('The media type could not be enabled. Please, try again.'));
+
+                return $this->redirect(['action' => 'index']);
+
+            }
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
         }
-        $this->Flash->error(__('The media type could not be enabled. Please, try again.'));
-
-        return $this->redirect(['action' => 'index']);
+        else{
+            return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+        }
     }
 }

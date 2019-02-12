@@ -13,6 +13,11 @@ use App\Controller\AppController;
 class MovieGenresController extends AppController
 {
 
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('Auth');
+    }
     /**
      * Index method
      *
@@ -20,9 +25,26 @@ class MovieGenresController extends AppController
      */
     public function index()
     {
-        $movieGenres = $this->paginate($this->MovieGenres);
 
-        $this->set(compact('movieGenres'));
+
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin']){
+
+                $movieGenres = $this->paginate($this->MovieGenres);
+
+                $this->set(compact('movieGenres'));
+
+            }
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
+        }
+        else{
+            return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+        }
     }
 
     /**
@@ -34,11 +56,28 @@ class MovieGenresController extends AppController
      */
     public function view($id = null)
     {
-        $movieGenre = $this->MovieGenres->get($id, [
-            'contain' => []
-        ]);
 
-        $this->set('movieGenre', $movieGenre);
+
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin']){
+
+                $movieGenre = $this->MovieGenres->get($id, [
+                    'contain' => []
+                ]);
+
+                $this->set('movieGenre', $movieGenre);
+
+            }
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
+        }
+        else{
+            return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+        }
     }
 
     /**
@@ -48,17 +87,35 @@ class MovieGenresController extends AppController
      */
     public function add()
     {
-        $movieGenre = $this->MovieGenres->newEntity();
-        if ($this->request->is('post')) {
-            $movieGenre = $this->MovieGenres->patchEntity($movieGenre, $this->request->getData());
-            if ($this->MovieGenres->save($movieGenre)) {
-                $this->Flash->success(__('The movie genre has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+
+
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin']){
+
+                $movieGenre = $this->MovieGenres->newEntity();
+                if ($this->request->is('post')) {
+                    $movieGenre = $this->MovieGenres->patchEntity($movieGenre, $this->request->getData());
+                    if ($this->MovieGenres->save($movieGenre)) {
+                        $this->Flash->success(__('The movie genre has been saved.'));
+
+                        return $this->redirect(['action' => 'index']);
+                    }
+                    $this->Flash->error(__('The movie genre could not be saved. Please, try again.'));
+                }
+                $this->set(compact('movieGenre'));
+
             }
-            $this->Flash->error(__('The movie genre could not be saved. Please, try again.'));
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
         }
-        $this->set(compact('movieGenre'));
+        else{
+            return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+        }
     }
 
     /**
@@ -70,19 +127,36 @@ class MovieGenresController extends AppController
      */
     public function edit($id = null)
     {
-        $movieGenre = $this->MovieGenres->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $movieGenre = $this->MovieGenres->patchEntity($movieGenre, $this->request->getData());
-            if ($this->MovieGenres->save($movieGenre)) {
-                $this->Flash->success(__('The movie genre has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin']){
+
+                $movieGenre = $this->MovieGenres->get($id, [
+                    'contain' => []
+                ]);
+                if ($this->request->is(['patch', 'post', 'put'])) {
+                    $movieGenre = $this->MovieGenres->patchEntity($movieGenre, $this->request->getData());
+                    if ($this->MovieGenres->save($movieGenre)) {
+                        $this->Flash->success(__('The movie genre has been saved.'));
+
+                        return $this->redirect(['action' => 'index']);
+                    }
+                    $this->Flash->error(__('The movie genre could not be saved. Please, try again.'));
+                }
+                $this->set(compact('movieGenre'));
+
             }
-            $this->Flash->error(__('The movie genre could not be saved. Please, try again.'));
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
         }
-        $this->set(compact('movieGenre'));
+        else{
+            return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+        }
     }
 
     /**
@@ -94,18 +168,35 @@ class MovieGenresController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $movieGenre = $this->MovieGenres->get($id);
 
-        $movieGenre['active'] = 0;
-        if ($this->MovieGenres->save($movieGenre)) {
-            $this->Flash->success(__('The movie genre has been disabled.'));
 
-            return $this->redirect(['action' => 'index']);
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin']){
+
+                $this->request->allowMethod(['post', 'delete']);
+                $movieGenre = $this->MovieGenres->get($id);
+
+                $movieGenre['active'] = 0;
+                if ($this->MovieGenres->save($movieGenre)) {
+                    $this->Flash->success(__('The movie genre has been disabled.'));
+
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('The movie genre could not be disabled. Please, try again.'));
+
+                return $this->redirect(['action' => 'index']);
+
+            }
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
         }
-        $this->Flash->error(__('The movie genre could not be disabled. Please, try again.'));
-
-        return $this->redirect(['action' => 'index']);
+        else{
+            return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+        }
     }
     /**
      * Active method
@@ -116,17 +207,34 @@ class MovieGenresController extends AppController
      */
     public function active($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $movieGenre = $this->MovieGenres->get($id);
 
-        $movieGenre['active'] = 1;
-        if ($this->MovieGenres->save($movieGenre)) {
-            $this->Flash->success(__('The movie genre has been enabled.'));
 
-            return $this->redirect(['action' => 'index']);
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin']){
+
+                $this->request->allowMethod(['post', 'delete']);
+                $movieGenre = $this->MovieGenres->get($id);
+
+                $movieGenre['active'] = 1;
+                if ($this->MovieGenres->save($movieGenre)) {
+                    $this->Flash->success(__('The movie genre has been enabled.'));
+
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('The movie genre could not be enabled. Please, try again.'));
+
+                return $this->redirect(['action' => 'index']);
+
+            }
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
         }
-        $this->Flash->error(__('The movie genre could not be enabled. Please, try again.'));
-
-        return $this->redirect(['action' => 'index']);
+        else{
+            return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+        }
     }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use Cake\Event\Event;
 use App\Controller\AppController;
 use DateTime;
 
@@ -14,6 +15,11 @@ use DateTime;
 class RentalsController extends AppController
 {
 
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('Auth');
+    }
     /**
      * Index method
      *
@@ -21,12 +27,28 @@ class RentalsController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['PaymentMethods', 'Users']
-        ];
-        $rentals = $this->paginate($this->Rentals);
 
-        $this->set(compact('rentals'));
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin'] || $loggedUser['access_attendant']){
+
+                $this->paginate = [
+                    'contain' => ['PaymentMethods', 'Users']
+                ];
+                $rentals = $this->paginate($this->Rentals);
+
+                $this->set(compact('rentals'));
+            }
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
+        }
+        else{
+            return $this->redirect(['controller' => 'User' ,'action' => 'login']);
+        }
+
     }
 
     /**
@@ -38,28 +60,43 @@ class RentalsController extends AppController
      */
     public function view($id = null)
     {
-        $rental = $this->Rentals->get($id, [
-            'contain' => ['PaymentMethods', 'Users', 'MovieMediaTypes', 'MovieMediaTypes.Movies', 'MovieMediaTypes.MediaTypes']
-        ]);
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin'] || $loggedUser['access_attendant']){
 
-        $saldo = 0;
+                $rental = $this->Rentals->get($id, [
+                    'contain' => ['PaymentMethods', 'Users', 'MovieMediaTypes', 'MovieMediaTypes.Movies', 'MovieMediaTypes.MediaTypes']
+                ]);
 
-
-
-        $value = $rental->movie_media_type->movie->released == 0 ? ( $rental->movie_media_type->media_type->price) :  $rental->movie_media_type->media_type->price  * 1.5;
-        $saldo = $saldo + $value;
-
-
-        $modify = $rental->movie_media_type->movie->released == 0 ? '+3 days' : '+1 day';
-        $interval = $rental->start_date->modify($modify)->diff(new DateTime());
-        $dias = $interval->days;
+                $saldo = 0;
 
 
-        $multa = $dias != 0 ? ($saldo * $dias) : 0;
 
-        $total = $saldo + $multa - $rental->pre_paid;
+                $value = $rental->movie_media_type->movie->released == 0 ? ( $rental->movie_media_type->media_type->price) :  $rental->movie_media_type->media_type->price  * 1.5;
+                $saldo = $saldo + $value;
 
-        $this->set(compact('rental', 'saldo', 'dias', 'multa', 'total'));
+
+                $modify = $rental->movie_media_type->movie->released == 0 ? '+3 days' : '+1 day';
+                $interval = $rental->start_date->modify($modify)->diff(new DateTime());
+                $dias = $interval->days;
+
+
+                $multa = $dias != 0 ? ($saldo * $dias) : 0;
+
+                $total = $saldo + $multa - $rental->pre_paid;
+
+                $this->set(compact('rental', 'saldo', 'dias', 'multa', 'total'));
+            }
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
+        }
+        else{
+            return $this->redirect(['controller' => 'User' ,'action' => 'login']);
+        }
+
     }
 
     /**
@@ -69,26 +106,38 @@ class RentalsController extends AppController
      */
     public function add()
     {
-        $rental = $this->Rentals->newEntity();
-        if ($this->request->is('post')) {
-            $ren = $this->request->getData();
-            $ren['attendant_id'] = 2;
-            debug($ren);
-            $rental = $this->Rentals->patchEntity($rental, $ren);
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin'] || $loggedUser['access_attendant']){
+                $rental = $this->Rentals->newEntity();
+                if ($this->request->is('post')) {
+                    $ren = $this->request->getData();
+                    $ren['attendant_id'] = 2;
+                    $rental = $this->Rentals->patchEntity($rental, $ren);
 //            if ($this->Rentals->save($rental)) {
 //                $this->Flash->success(__('The rental has been saved.'));
 //
 //                return $this->redirect(['action' => 'index']);
 //            }
-            $this->Flash->error(__('The rental could not be saved. Please, try again.'));
+                    $this->Flash->error(__('The rental could not be saved. Please, try again.'));
+                }
+                $paymentMethods = $this->Rentals->PaymentMethods->find('list', ['limit' => 200]);
+                $users = $this->Rentals->Users->find('list', ['limit' => 200]);
+                $movieMediaTypes = $this->Rentals->MovieMediaTypes->find('all', [
+                    'contain' => ['Movies', 'MediaTypes']
+                ]);
+                $this->set(compact('rental', 'paymentMethods', 'users', 'movieMediaTypes'));
+            }
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
         }
-        $paymentMethods = $this->Rentals->PaymentMethods->find('list', ['limit' => 200]);
-        $users = $this->Rentals->Users->find('list', ['limit' => 200]);
-        $movieMediaTypes = $this->Rentals->MovieMediaTypes->find('all', [
-            'contain' => ['Movies', 'MediaTypes']
-        ]);
-        debug($movieMediaTypes);
-        $this->set(compact('rental', 'paymentMethods', 'users', 'movieMediaTypes'));
+        else{
+            return $this->redirect(['controller' => 'User' ,'action' => 'login']);
+        }
+
     }
 
     /**
@@ -100,21 +149,35 @@ class RentalsController extends AppController
      */
     public function edit($id = null)
     {
-        $rental = $this->Rentals->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $rental = $this->Rentals->patchEntity($rental, $this->request->getData());
-            if ($this->Rentals->save($rental)) {
-                $this->Flash->success(__('The rental has been saved.'));
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin']){
+                $rental = $this->Rentals->get($id, [
+                    'contain' => []
+                ]);
+                if ($this->request->is(['patch', 'post', 'put'])) {
+                    $rental = $this->Rentals->patchEntity($rental, $this->request->getData());
+                    if ($this->Rentals->save($rental)) {
+                        $this->Flash->success(__('The rental has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                        return $this->redirect(['action' => 'index']);
+                    }
+                    $this->Flash->error(__('The rental could not be saved. Please, try again.'));
+                }
+                $paymentMethods = $this->Rentals->PaymentMethods->find('list', ['limit' => 200]);
+                $users = $this->Rentals->Users->find('list', ['limit' => 200]);
+                $this->set(compact('rental', 'paymentMethods', 'users'));
+
             }
-            $this->Flash->error(__('The rental could not be saved. Please, try again.'));
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
         }
-        $paymentMethods = $this->Rentals->PaymentMethods->find('list', ['limit' => 200]);
-        $users = $this->Rentals->Users->find('list', ['limit' => 200]);
-        $this->set(compact('rental', 'paymentMethods', 'users'));
+        else{
+            return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+        }
     }
 
     /**
@@ -126,18 +189,34 @@ class RentalsController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $rental = $this->Rentals->get($id);
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin']){
 
-        $rental['active'] = 0;
-        if ($this->Rentals->save($rental)) {
-            $this->Flash->success(__('The rental has been disabled.'));
+                $this->request->allowMethod(['post', 'delete']);
+                $rental = $this->Rentals->get($id);
 
-            return $this->redirect(['action' => 'index']);
+                $rental['active'] = 0;
+                if ($this->Rentals->save($rental)) {
+                    $this->Flash->success(__('The rental has been disabled.'));
+
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('The rental could not be disabled. Please, try again.'));
+
+                return $this->redirect(['action' => 'index']);
+
+            }
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
         }
-        $this->Flash->error(__('The rental could not be disabled. Please, try again.'));
+        else{
+            return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+        }
 
-        return $this->redirect(['action' => 'index']);
     }
     /**
      * Active method
@@ -148,17 +227,32 @@ class RentalsController extends AppController
      */
     public function active($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $rental = $this->Rentals->get($id);
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin']){
 
-        $rental['active'] = 1;
-        if ($this->Rentals->save($rental)) {
-            $this->Flash->success(__('The rental has been enabled.'));
+                $this->request->allowMethod(['post', 'delete']);
+                $rental = $this->Rentals->get($id);
 
-            return $this->redirect(['action' => 'index']);
+                $rental['active'] = 1;
+                if ($this->Rentals->save($rental)) {
+                    $this->Flash->success(__('The rental has been enabled.'));
+
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('The rental could not be enabled. Please, try again.'));
+
+                return $this->redirect(['action' => 'index']);
+
+            }
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
         }
-        $this->Flash->error(__('The rental could not be enabled. Please, try again.'));
-
-        return $this->redirect(['action' => 'index']);
+        else{
+            return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+        }
     }
 }

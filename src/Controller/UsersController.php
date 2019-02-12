@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
+use Cake\Event\Event;
 
 /**
  * Users Controller
@@ -13,12 +14,25 @@ use Cake\ORM\TableRegistry;
  */
 class UsersController extends AppController
 {
-
     public function initialize()
     {
         parent::initialize();
+        $this->loadComponent('Auth');
         $this->loadModel('Rentals');
     }
+
+
+
+    public function beforeFilter(Event $event)
+    {
+        parent::beforeFilter($event);
+        // Permitir aos usuários se registrarem e efetuar logout.
+        // Você não deve adicionar a ação de "login" a lista de permissões.
+        // Isto pode causar problemas com o funcionamento normal do AuthComponent.
+        $this->Auth->allow(['add', 'logout']);
+    }
+
+
     /**
      * Index method
      *
@@ -26,9 +40,26 @@ class UsersController extends AppController
      */
     public function index()
     {
-//        $this->viewBuilder()->setLayout('home');
-        $users = $this->paginate($this->Users);
-        $this->set(compact('users'));
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin']){
+
+                $users = $this->paginate($this->Users);
+                $this->set(compact('users'));
+
+
+            }
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
+        }
+        else{
+            return $this->redirect(['controller' => 'User' ,'action' => 'login']);
+        }
+
+
     }
     /**
      * Attendats Index method
@@ -37,11 +68,26 @@ class UsersController extends AppController
      */
     public function attendants()
     {
-        $attendants = $this->Users->find('all')
-            ->where(['Users.access_attendant' => 1]);
-        $users = $this->paginate($attendants);
 
-        $this->set(compact('users'));
+
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin']){
+                $attendants = $this->Users->find('all')
+                    ->where(['Users.access_attendant' => 1]);
+                $users = $this->paginate($attendants);
+                $this->set(compact('users'));
+
+            }
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
+        }
+        else{
+            return $this->redirect(['controller' => 'User' ,'action' => 'login']);
+        }
     }
 
     /**
@@ -51,12 +97,29 @@ class UsersController extends AppController
      */
     public function clients()
     {
-        $clients = $this->Users->find('all')
-            ->where(['Users.access_attendant' => 0,
-                'Users.access_admin' => 0]);
-        $users = $this->paginate($clients);
 
-        $this->set(compact('users'));
+
+
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin'] || $loggedUser['access_attendant']){
+
+                $clients = $this->Users->find('all')
+                    ->where(['Users.access_attendant' => 0,
+                        'Users.access_admin' => 0]);
+                $users = $this->paginate($clients);
+
+                $this->set(compact('users'));
+
+            }
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+        }
+        else{
+            return $this->redirect(['controller' => 'User' ,'action' => 'login']);
+        }
     }
 
     /**
@@ -68,21 +131,39 @@ class UsersController extends AppController
      */
     public function view($id = null)
     {
-        $user = $this->Users->get($id);
 
 
-        $childs = $this->Users->find('all')
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin'] || $loggedUser['access_attendant']){
 
-            ->where(['Users.parent_id' => $id])->toArray();
+                $user = $this->Users->get($id);
 
-        $users1 = TableRegistry::get('Users');
-        $users1->recover();
 
-        $rentals = $this->Rentals->find('all')->where([
-            'Rentals.client_id' => $id
-        ]);
+                $childs = $this->Users->find('all')
 
-        $this->set(compact('dependents', 'childs', 'user', 'rentals'));
+                    ->where(['Users.parent_id' => $id])->toArray();
+
+                $users1 = TableRegistry::get('Users');
+                $users1->recover();
+
+                $rentals = $this->Rentals->find('all')->where([
+                    'Rentals.client_id' => $id
+                ]);
+
+                $this->set(compact('dependents', 'childs', 'user', 'rentals'));
+
+
+            }
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
+        }
+        else{
+            return $this->redirect(['controller' => 'User' ,'action' => 'login']);
+        }
     }
 
     /**
@@ -92,17 +173,33 @@ class UsersController extends AppController
      */
     public function add()
     {
-        $user = $this->Users->newEntity();
-        if ($this->request->is('post')) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
-            if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin']){
 
-                return $this->redirect(['action' => 'index']);
+                $user = $this->Users->newEntity();
+                if ($this->request->is('post')) {
+                    $user = $this->Users->patchEntity($user, $this->request->getData());
+                    if ($this->Users->save($user)) {
+                        $this->Flash->success(__('The user has been saved.'));
+
+                        return $this->redirect(['action' => 'index']);
+                    }
+                    $this->Flash->error(__('The user could not be saved. Please, try again.'));
+                }
+                $this->set(compact('user'));
+
+
             }
-            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
         }
-        $this->set(compact('user'));
+        else{
+            return $this->redirect(['controller' => 'User' ,'action' => 'login']);
+        }
     }
     /**
      * Add attendant method
@@ -111,20 +208,38 @@ class UsersController extends AppController
      */
     public function addAttendant()
     {
-        $user = $this->Users->newEntity();
-        if ($this->request->is('post')) {
-            $client = $this->request->getData();
-            $client['access_admin'] = 0;
-            $client['access_attendant'] = 1;
-            $user = $this->Users->patchEntity($user, $client);
-            if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+
+
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin'] || $loggedUser['access_attendant']){
+
+                $user = $this->Users->newEntity();
+                if ($this->request->is('post')) {
+                    $client = $this->request->getData();
+                    $client['access_admin'] = 0;
+                    $client['access_attendant'] = 1;
+                    $user = $this->Users->patchEntity($user, $client);
+                    if ($this->Users->save($user)) {
+                        $this->Flash->success(__('The user has been saved.'));
+
+                        return $this->redirect(['action' => 'index']);
+                    }
+                    $this->Flash->error(__('The user could not be saved. Please, try again.'));
+                }
+                $this->set(compact('user'));
+
             }
-            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
         }
-        $this->set(compact('user'));
+        else{
+            return $this->redirect(['controller' => 'User' ,'action' => 'login']);
+        }
     }
     /**
      * Add client method
@@ -133,21 +248,35 @@ class UsersController extends AppController
      */
     public function addClient()
     {
-        $user = $this->Users->newEntity();
-        if ($this->request->is('post')) {
-            $client = $this->request->getData();
-            $client['access_admin'] = 0;
-            $client['access_attendant'] = 0;
-            $client['active'] = 1;
-            $user = $this->Users->patchEntity($user, $client);
-            if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin'] || $loggedUser['access_attendant']){
 
-                return $this->redirect(['action' => 'index']);
+                $user = $this->Users->newEntity();
+                if ($this->request->is('post')) {
+                    $client = $this->request->getData();
+                    $client['access_admin'] = 0;
+                    $client['access_attendant'] = 0;
+                    $client['active'] = 1;
+                    $user = $this->Users->patchEntity($user, $client);
+                    if ($this->Users->save($user)) {
+                        $this->Flash->success(__('The user has been saved.'));
+
+                        return $this->redirect(['action' => 'index']);
+                    }
+                    $this->Flash->error(__('The user could not be saved. Please, try again.'));
+                }
+                $this->set(compact('user'));
             }
-            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
         }
-        $this->set(compact('user'));
+        else{
+            return $this->redirect(['controller' => 'User' ,'action' => 'login']);
+        }
     }
     /**
      * Add dependent method
@@ -156,50 +285,66 @@ class UsersController extends AppController
      */
     public function addDependent($client_id = null)
     {
-        $user = $this->Users->newEntity();
-        if ($this->request->is('post')) {
-            $client = $this->request->getData();
-            $client['access_admin'] = 0;
-            $client['access_attendant'] = 0;
-            $client['active'] = 1;
-
-            $parent = $this->Users->find('all')
-                ->where([
-                'Users.id' => $client_id,
-                'Users.parent_id is' => null
-            ])->first();
-            $childs = $this->Users->find('all')
-                ->where(['Users.parent_id' => $client_id])->toArray();
-
-            if ($parent){
-
-                $client['parent_id'] = $client_id;
-                $user = $this->Users->patchEntity($user, $client);
 
 
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin'] || $loggedUser['access_attendant']){
 
-                if (count($childs) < 3){
-                    if ($this->Users->save($user)) {
-                        $this->Flash->success(__('The user has been saved.'));
+                $user = $this->Users->newEntity();
+                if ($this->request->is('post')) {
+                    $client = $this->request->getData();
+                    $client['access_admin'] = 0;
+                    $client['access_attendant'] = 0;
+                    $client['active'] = 1;
 
-                        return $this->redirect(['action' => 'index']);
+                    $parent = $this->Users->find('all')
+                        ->where([
+                            'Users.id' => $client_id,
+                            'Users.parent_id is' => null
+                        ])->first();
+                    $childs = $this->Users->find('all')
+                        ->where(['Users.parent_id' => $client_id])->toArray();
+
+                    if ($parent){
+
+                        $client['parent_id'] = $client_id;
+                        $user = $this->Users->patchEntity($user, $client);
+
+
+
+                        if (count($childs) < 3){
+                            if ($this->Users->save($user)) {
+                                $this->Flash->success(__('The user has been saved.'));
+
+                                return $this->redirect(['action' => 'index']);
+                            }
+                            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+                        }
+                        else{
+                            $this->Flash->error(__('The user could not be saved because you reached the limit of dependents.'));
+                        }
+
+
+
                     }
-                    $this->Flash->error(__('The user could not be saved. Please, try again.'));
+                    else{
+                        $this->Flash->error(__('The parent could not be find or you are a dependent. Please, try again.'));
+                    }
+
+
                 }
-                else{
-                    $this->Flash->error(__('The user could not be saved because you reached the limit of dependents.'));
-                }
-
-
-
+                $this->set(compact('user'));
             }
             else{
-                $this->Flash->error(__('The parent could not be find or you are a dependent. Please, try again.'));
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
             }
 
-
         }
-        $this->set(compact('user'));
+        else{
+            return $this->redirect(['controller' => 'User' ,'action' => 'login']);
+        }
     }
 
 
@@ -212,19 +357,34 @@ class UsersController extends AppController
      */
     public function edit($id = null)
     {
-        $user = $this->Users->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
-            if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin'] || $loggedUser['access_attendant']){
+
+                $user = $this->Users->get($id, [
+                    'contain' => []
+                ]);
+                if ($this->request->is(['patch', 'post', 'put'])) {
+                    $user = $this->Users->patchEntity($user, $this->request->getData());
+                    if ($this->Users->save($user)) {
+                        $this->Flash->success(__('The user has been saved.'));
+
+                        return $this->redirect(['action' => 'index']);
+                    }
+                    $this->Flash->error(__('The user could not be saved. Please, try again.'));
+                }
+                $this->set(compact('user'));
             }
-            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
         }
-        $this->set(compact('user'));
+        else{
+            return $this->redirect(['controller' => 'User' ,'action' => 'login']);
+        }
     }
 
     /**
@@ -236,18 +396,34 @@ class UsersController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $user = $this->Users->get($id);
 
-        $user['active'] = 0;
-        if ($this->Users->save($user)) {
-            $this->Flash->success(__('The user has been disabled.'));
 
-            return $this->redirect(['action' => 'index']);
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin'] || $loggedUser['access_attendant']){
+
+                $this->request->allowMethod(['post', 'delete']);
+                $user = $this->Users->get($id);
+
+                $user['active'] = 0;
+                if ($this->Users->save($user)) {
+                    $this->Flash->success(__('The user has been disabled.'));
+
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('The user could not be disabled. Please, try again.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
         }
-        $this->Flash->error(__('The user could not be disabled. Please, try again.'));
-
-        return $this->redirect(['action' => 'index']);
+        else{
+            return $this->redirect(['controller' => 'User' ,'action' => 'login']);
+        }
     }
     /**
      * Active method
@@ -258,18 +434,63 @@ class UsersController extends AppController
      */
     public function active($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $user = $this->Users->get($id);
 
-        $user['active'] = 1;
-        if ($this->Users->save($user)) {
-            $this->Flash->success(__('The user has been enabled.'));
 
-            return $this->redirect(['action' => 'index']);
+
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin'] || $loggedUser['access_attendant']){
+
+                $this->request->allowMethod(['post', 'delete']);
+                $user = $this->Users->get($id);
+
+                $user['active'] = 1;
+                if ($this->Users->save($user)) {
+                    $this->Flash->success(__('The user has been enabled.'));
+
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('The user could not be enabled. Please, try again.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
         }
-        $this->Flash->error(__('The user could not be enabled. Please, try again.'));
-
-        return $this->redirect(['action' => 'index']);
+        else{
+            return $this->redirect(['controller' => 'User' ,'action' => 'login']);
+        }
+    }
+    /**
+     * login method
+     *
+     * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function login()
+    {
+        $this->viewBuilder()->setLayout('home');
+        if ($this->request->is('post')) {
+            $user = $this->Auth->identify();
+            if ($user) {
+                $this->Auth->setUser($user);
+                return $this->redirect($this->Auth->redirectUrl());
+            }
+            $this->Flash->error(__('Usuário ou senha ínvalido, tente novamente'));
+        }
+    }
+    /**
+     * logout method
+     *
+     * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function logout()
+    {
+        return $this->redirect($this->Auth->logout());
     }
 
 }

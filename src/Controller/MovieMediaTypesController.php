@@ -13,6 +13,12 @@ use App\Controller\AppController;
 class MovieMediaTypesController extends AppController
 {
 
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('Auth');
+    }
+
     /**
      * Index method
      *
@@ -20,12 +26,29 @@ class MovieMediaTypesController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Movies', 'MediaTypes']
-        ];
-        $movieMediaTypes = $this->paginate($this->MovieMediaTypes);
 
-        $this->set(compact('movieMediaTypes'));
+
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin']){
+
+                $this->paginate = [
+                    'contain' => ['Movies', 'MediaTypes']
+                ];
+                $movieMediaTypes = $this->paginate($this->MovieMediaTypes);
+
+                $this->set(compact('movieMediaTypes'));
+
+            }
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
+        }
+        else{
+            return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+        }
     }
 
     /**
@@ -37,11 +60,28 @@ class MovieMediaTypesController extends AppController
      */
     public function view($id = null)
     {
-        $movieMediaType = $this->MovieMediaTypes->get($id, [
-            'contain' => ['Movies', 'MediaTypes', 'Rentals']
-        ]);
 
-        $this->set('movieMediaType', $movieMediaType);
+
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin']){
+
+                $movieMediaType = $this->MovieMediaTypes->get($id, [
+                    'contain' => ['Movies', 'MediaTypes', 'Rentals']
+                ]);
+
+                $this->set('movieMediaType', $movieMediaType);
+
+            }
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
+        }
+        else{
+            return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+        }
     }
 
     /**
@@ -51,19 +91,36 @@ class MovieMediaTypesController extends AppController
      */
     public function add()
     {
-        $movieMediaType = $this->MovieMediaTypes->newEntity();
-        if ($this->request->is('post')) {
-            $movieMediaType = $this->MovieMediaTypes->patchEntity($movieMediaType, $this->request->getData());
-            if ($this->MovieMediaTypes->save($movieMediaType)) {
-                $this->Flash->success(__('The movie media type has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin']){
+
+                $movieMediaType = $this->MovieMediaTypes->newEntity();
+                if ($this->request->is('post')) {
+                    $movieMediaType = $this->MovieMediaTypes->patchEntity($movieMediaType, $this->request->getData());
+                    if ($this->MovieMediaTypes->save($movieMediaType)) {
+                        $this->Flash->success(__('The movie media type has been saved.'));
+
+                        return $this->redirect(['action' => 'index']);
+                    }
+                    $this->Flash->error(__('The movie media type could not be saved. Please, try again.'));
+                }
+                $movies = $this->MovieMediaTypes->Movies->find('list', ['limit' => 200]);
+                $mediaTypes = $this->MovieMediaTypes->MediaTypes->find('list', ['limit' => 200]);
+                $this->set(compact('movieMediaType', 'movies', 'mediaTypes'));
+
             }
-            $this->Flash->error(__('The movie media type could not be saved. Please, try again.'));
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
         }
-        $movies = $this->MovieMediaTypes->Movies->find('list', ['limit' => 200]);
-        $mediaTypes = $this->MovieMediaTypes->MediaTypes->find('list', ['limit' => 200]);
-        $this->set(compact('movieMediaType', 'movies', 'mediaTypes'));
+        else{
+            return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+        }
     }
 
     /**
@@ -75,21 +132,38 @@ class MovieMediaTypesController extends AppController
      */
     public function edit($id = null)
     {
-        $movieMediaType = $this->MovieMediaTypes->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $movieMediaType = $this->MovieMediaTypes->patchEntity($movieMediaType, $this->request->getData());
-            if ($this->MovieMediaTypes->save($movieMediaType)) {
-                $this->Flash->success(__('The movie media type has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin']){
+
+                $movieMediaType = $this->MovieMediaTypes->get($id, [
+                    'contain' => []
+                ]);
+                if ($this->request->is(['patch', 'post', 'put'])) {
+                    $movieMediaType = $this->MovieMediaTypes->patchEntity($movieMediaType, $this->request->getData());
+                    if ($this->MovieMediaTypes->save($movieMediaType)) {
+                        $this->Flash->success(__('The movie media type has been saved.'));
+
+                        return $this->redirect(['action' => 'index']);
+                    }
+                    $this->Flash->error(__('The movie media type could not be saved. Please, try again.'));
+                }
+                $movies = $this->MovieMediaTypes->Movies->find('list', ['limit' => 200]);
+                $mediaTypes = $this->MovieMediaTypes->MediaTypes->find('list', ['limit' => 200]);
+                $this->set(compact('movieMediaType', 'movies', 'mediaTypes'));
+
             }
-            $this->Flash->error(__('The movie media type could not be saved. Please, try again.'));
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
         }
-        $movies = $this->MovieMediaTypes->Movies->find('list', ['limit' => 200]);
-        $mediaTypes = $this->MovieMediaTypes->MediaTypes->find('list', ['limit' => 200]);
-        $this->set(compact('movieMediaType', 'movies', 'mediaTypes'));
+        else{
+            return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+        }
     }
 
     /**
@@ -102,18 +176,35 @@ class MovieMediaTypesController extends AppController
     public function delete($id = null)
     {
 
-        $this->request->allowMethod(['post', 'delete']);
-        $movieMediaType = $this->MovieMediaTypes->get($id);
 
-        $movieMediaType['active'] = 0;
-        if ($this->MovieMediaTypes->save($movieMediaType)) {
-            $this->Flash->success(__('The movie media type has been disabled.'));
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin']){
 
-            return $this->redirect(['action' => 'index']);
+
+                $this->request->allowMethod(['post', 'delete']);
+                $movieMediaType = $this->MovieMediaTypes->get($id);
+
+                $movieMediaType['active'] = 0;
+                if ($this->MovieMediaTypes->save($movieMediaType)) {
+                    $this->Flash->success(__('The movie media type has been disabled.'));
+
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('The movie media type could not be disabled. Please, try again.'));
+
+                return $this->redirect(['action' => 'index']);
+
+            }
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
         }
-        $this->Flash->error(__('The movie media type could not be disabled. Please, try again.'));
-
-        return $this->redirect(['action' => 'index']);
+        else{
+            return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+        }
     }
     /**
      * Active method
@@ -125,18 +216,36 @@ class MovieMediaTypesController extends AppController
     public function active($id = null)
     {
 
-        $this->request->allowMethod(['post', 'put']);
-        $movieMediaType = $this->MovieMediaTypes->get($id);
 
-        $movieMediaType['active'] = 1;
-        if ($this->MovieMediaTypes->save($movieMediaType)) {
-            $this->Flash->success(__('The movie media type has been enabled.'));
 
-            return $this->redirect(['action' => 'index']);
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin']){
+
+
+                $this->request->allowMethod(['post', 'put']);
+                $movieMediaType = $this->MovieMediaTypes->get($id);
+
+                $movieMediaType['active'] = 1;
+                if ($this->MovieMediaTypes->save($movieMediaType)) {
+                    $this->Flash->success(__('The movie media type has been enabled.'));
+
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('The movie media type could not be enabled. Please, try again.'));
+
+                return $this->redirect(['action' => 'index']);
+
+            }
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+            }
+
         }
-        $this->Flash->error(__('The movie media type could not be enabled. Please, try again.'));
-
-        return $this->redirect(['action' => 'index']);
+        else{
+            return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+        }
     }
 
 }
