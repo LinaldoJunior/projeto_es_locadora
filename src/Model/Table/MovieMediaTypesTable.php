@@ -58,6 +58,144 @@ class MovieMediaTypesTable extends Table
         $this->hasMany('Rentals', [
             'foreignKey' => 'movie_media_type_id'
         ]);
+
+        // Add the behaviour to your table
+        $this->addBehavior('Search.Search');
+
+        $this->searchManager()
+//            ->add('id', 'Search.Value', [
+//                'field' => $this->aliasField('id')
+//            ])
+//            ->add('movie_type_id', 'Search.Value', [
+//                'field' => $this->aliasField('movie_type_id')
+//            ])
+//            ->add('media_type_id', 'Search.Value', [
+//                'field' => $this->aliasField('media_type_id')
+//            ])
+//            ->add('movie_id', 'Search.Value', [
+//                'field' => $this->aliasField('movie_id')
+//            ])
+//            ->add('movie_id', 'Search.Callback', [
+//                'callback' => function ($query, $args, $manager) {
+//
+//                    $query->contain(['Movies']);
+//
+//                    $args = explode(" ", $args['movie_id']);
+//                    foreach ($args as $arg) {
+//                        $data[] = [
+//                            'OR' => [
+//                                ['Movies.name' => '%' . (Int)$arg . '%'],
+//                            ]
+//                        ];
+//                    }
+//                    debug($data);
+//                    $query->where($data);
+//                    return $query;
+//                }
+//            ])
+            ->add('movie_name', 'Search.Callback', [
+                'callback' => function ($query, $args, $manager) {
+
+                    $query->contain(['Movies']);
+
+                    $args = explode(" ", $args['movie_name']);
+                    foreach ($args as $arg) {
+                        $data[] = [
+                            'OR' => [
+                                ['Movies.name LIKE' => '%' . $arg . '%']
+                            ]
+                        ];
+                    }
+                    $query->where($data);
+                    return $query;
+                }
+            ])
+            ->add('movie_cast', 'Search.Callback', [
+                'callback' => function ($query, $args, $manager) {
+
+                    $query->contain(['Movies']);
+
+                    $args = explode(" ", $args['movie_cast']);
+                    foreach ($args as $arg) {
+                        $data[] = [
+                            'OR' => [
+                                ['Movies.cast LIKE' => '%' . $arg . '%']
+                            ]
+                        ];
+                    }
+                    $query->where($data);
+                    return $query;
+                }
+            ])
+            ->add('movie_director', 'Search.Callback', [
+                'callback' => function ($query, $args, $manager) {
+
+                    $query->contain(['Movies']);
+
+                    $args = explode(" ", $args['movie_director']);
+                    foreach ($args as $arg) {
+                        $data[] = [
+                            'OR' => [
+                                ['Movies.director LIKE' => '%' . $arg . '%']
+                            ]
+                        ];
+                    }
+                    $query->where($data);
+                    return $query;
+                }
+            ])
+            ->add('movie_year', 'Search.Callback', [
+                'callback' => function ($query, $args, $manager) {
+
+                    $query->contain(['Movies']);
+
+                    $args = explode(" ", $args['movie_year']);
+                    foreach ($args as $arg) {
+                        $data[] = [
+                            'OR' => [
+                                ['Movies.year LIKE' => '%' . $arg . '%']
+                            ]
+                        ];
+                    }
+                    $query->where($data);
+                    return $query;
+                }
+            ])
+            ->add('movie_movie_gender_id', 'Search.Callback', [
+                'callback' => function ($query, $args, $manager) {
+
+                    $query->contain(['Movies']);
+
+                    $args = explode(" ", $args['movie_movie_gender_id']);
+                    foreach ($args as $arg) {
+                        $data[] = [
+                            'OR' => [
+                                ['Movies.movie_gender_id LIKE' => '%' . $arg . '%']
+                            ]
+                        ];
+                    }
+                    $query->where($data);
+                    return $query;
+                }
+            ])
+            ->add('movie_type_id', 'Search.Callback', [
+                'callback' => function ($query, $args, $manager) {
+
+                    $query->contain(['MediaTypes']);
+
+                    $args = explode(" ", $args['movie_type_id']);
+                    foreach ($args as $arg) {
+                        $data[] = [
+                            'OR' => [
+                                ['MediaTypes.id' =>   $arg]
+                            ]
+                        ];
+                    }
+                    $query->where($data);
+                    return $query;
+                }
+            ])
+            ;
     }
 
     /**

@@ -49,6 +49,61 @@ class MoviesTable extends Table
         $this->hasMany('MovieMediaTypes', [
             'foreignKey' => 'movie_id'
         ]);
+
+        // Add the behaviour to your table
+        $this->addBehavior('Search.Search');
+
+        $this->searchManager()
+            ->add('movie_gender_id', 'Search.Value', [
+                'field' => $this->aliasField('movie_gender_id')
+            ])
+            ->add('name', 'Search.Value', [
+                'field' => $this->aliasField('name')
+            ])
+            ->add('year', 'Search.Value', [
+                'field' => $this->aliasField('year')
+            ])
+            ->add('gender', 'Search.Value', [
+                'field' => $this->aliasField('gender')
+            ])
+//            ->add('movie_gender_id', 'Search.Callback', [
+//                'callback' => function ($query, $args, $manager) {
+//
+//                    $query->contain(['MovieGenres']);
+//
+//                    $args = explode(" ", $args['movie_gender_id']);
+//                    foreach ($args as $arg) {
+//                        $data[] = [
+//                            'OR' => [
+//                                ['MovieGenres.id' => '%' . (Int)$arg . '%'],
+//                            ]
+//                        ];
+//                    }
+//                    debug($data);
+//                    $query->where($data);
+//                    return $query;
+//                }
+//            ])
+//            ->add('movie_gender_id', 'Search.Callback', [
+//                'callback' => function ($query, $args, $manager) {
+//
+//                    $query->contain(['MovieGenres']);
+//
+//                    $args = explode(" ", $args['movie_gender_id']);
+//                    foreach ($args as $arg) {
+//                        $data[] = [
+//                            'OR' => [
+//                                ['MovieGenres.id' => '%' . $arg . '%'],
+//                            ]
+//                        ];
+//                    }
+//                    debug($data);
+//                    $query->where($data);
+//                    return $query;
+//                }
+//            ])
+        ;
+
     }
 
     /**
