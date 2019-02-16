@@ -113,7 +113,7 @@ class RentalsController extends AppController
                 $rental = $this->Rentals->newEntity();
                 if ($this->request->is('post')) {
                     $ren = $this->request->getData();
-                    $ren['attendant_id'] = 2;
+                    $ren['attendant_id'] = $loggedUser->id;
                     $rental = $this->Rentals->patchEntity($rental, $ren);
                     debug($rental);
             if ($this->Rentals->save($rental)) {

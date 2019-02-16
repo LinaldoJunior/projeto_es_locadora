@@ -7,6 +7,7 @@
     <!-- Bootstrap core CSS -->
     <?= $this->Html->css('bootstrap.min.css') ?>
     <?= $this->Html->css('card-carousel.css') ?>
+    <?= $this->Html->css('custom.css') ?>
 
 
     <?= $this->fetch('meta') ?>
@@ -52,12 +53,15 @@
 <!--<main role="main" class="container-fluid h-100">-->
 <!---->
 <!--</main>-->
+
 <div class="container h-100">
     <div class="row h-100 justify-content-center align-items-center">
-        <?= $this->fetch('content') ?>
+        <?=
+        $this->fetch('content')
+        ?>
     </div>
 </div>
-
+<?= $this->Flash->render() ?>
 
 
 

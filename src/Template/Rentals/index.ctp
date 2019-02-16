@@ -19,7 +19,7 @@
                 <th scope="col"><?= $this->Paginator->sort('id', ['label' => '#']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('start_date', ['label' => 'Data de início']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('end_date', ['label' => 'Entrega prevista']) ?></th>
-                <th scope="col"><?= $this->Paginator->sort('user_id', ['label' => 'Cliente']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('client_id', ['label' => 'Cliente']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('finished', ['label' => 'Concluída']) ?></th>
                 <th scope="col" class="actions"><?= __('Ações') ?></th>
             </tr>

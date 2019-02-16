@@ -7,7 +7,7 @@
     <!-- Bootstrap core CSS -->
     <?= $this->Html->css('bootstrap.min.css') ?>
     <?= $this->Html->css('card-carousel.css') ?>
-
+    <?= $this->Html->css('custom.css') ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
@@ -46,9 +46,10 @@
 <!--            <button class="btn btn-outline-light my-2 my-sm-0" type="submit"><span><i class="fas fa-lock"></i></span> Acesso restrito</button>-->
         </form>
     </div>
-</nav>
 
+</nav>
 <main role="main" class="container-fluid">
+    <?= $this->Flash->render() ?>
     <?= $this->fetch('content') ?>
 </main>
 

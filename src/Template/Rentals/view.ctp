@@ -22,7 +22,10 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Cliente') ?></th>
-            <td><?= $rental->has('user') ? $this->Html->link($rental->user->fullname, ['controller' => 'Users', 'action' => 'view', $rental->user->id]) : '' ?></td>
+            <?php
+                debug($rental)
+            ?>
+            <td><?= $rental->has('client_id') ? $this->Html->link($rental->user->fullname, ['controller' => 'Users', 'action' => 'view', $rental->client_id]) : '' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Método de pagamento') ?></th>

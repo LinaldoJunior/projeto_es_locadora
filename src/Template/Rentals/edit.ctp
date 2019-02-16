@@ -21,7 +21,7 @@
             echo $this->Form->control('price');
             echo $this->Form->control('pre_paid');
             echo $this->Form->control('payment_method_id', ['options' => $paymentMethods]);
-            echo $this->Form->control('user_id', ['options' => $users]);
+            echo $this->Form->control('client_id', ['options' => $users]);
             echo $this->Form->control('finished');
             echo $this->Form->control('movie_media_type_id', ['options' => $movieMediaTypes])
         ?>

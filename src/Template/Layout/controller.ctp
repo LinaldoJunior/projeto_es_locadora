@@ -52,12 +52,13 @@
 <!--<main role="main" class="container-fluid h-100">-->
 <!---->
 <!--</main>-->
+
 <div class="container clearfix h-100">
     <div class="row h-100 justify-content-center align-items-center">
         <?= $this->fetch('content') ?>
     </div>
 </div>
-
+<?= $this->Flash->render() ?>
 
 
 
