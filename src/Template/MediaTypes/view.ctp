@@ -8,7 +8,7 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Ações') ?></li>
         <li><?= $this->Html->link(__('Editar'), ['action' => 'edit', $mediaType->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Apagar'), ['action' => 'delete', $mediaType->id], ['confirm' => __('Are you sure you want to delete # {0}?', $mediaType->id)]) ?> </li>
+        <li><?= $this->Form->postLink(__('Desativar'), ['action' => 'delete', $mediaType->id], ['confirm' => __('Are you sure you want to delete # {0}?', $mediaType->id)]) ?> </li>
         <li><?= $this->Html->link(__('Voltar'), ['action' => 'index']) ?> </li>
     </ul>
 </nav>
@@ -52,7 +52,7 @@
                 <td class="actions">
                     <?= $this->Html->link(__('Visualizar'), ['controller' => 'MovieMediaTypes', 'action' => 'view', $movieMediaTypes->id]) ?>
                     <?= $this->Html->link(__('Editar'), ['controller' => 'MovieMediaTypes', 'action' => 'edit', $movieMediaTypes->id]) ?>
-                    <?= $this->Form->postLink(__('Apagar'), ['controller' => 'MovieMediaTypes', 'action' => 'delete', $movieMediaTypes->id], ['confirm' => __('Are you sure you want to delete # {0}?', $movieMediaTypes->id)]) ?>
+                    <?= $this->Form->postLink(__('Desativar'), ['controller' => 'MovieMediaTypes', 'action' => 'delete', $movieMediaTypes->id], ['confirm' => __('Are you sure you want to delete # {0}?', $movieMediaTypes->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

@@ -36,6 +36,7 @@
                     <?= $this->Html->link(__('Visualizar'), ['action' => 'view', $rental->id]) ?>
                     <?= $this->Html->link(__('Editar'), ['action' => 'edit', $rental->id]) ?>
                     <?= $this->Form->postLink(__('Desativar'), ['action' => 'delete', $rental->id], ['confirm' => __('Are you sure you want to delete # {0}?', $rental->id)]) ?>
+                    <?= $this->Form->postLink(__('Finalizar'), ['action' => 'finish', $rental->id], ['confirm' => __('Are you sure you want to finish # {0}?', $rental->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

@@ -8,7 +8,7 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Ações') ?></li>
         <li><?= $this->Html->link(__('Editar Locação'), ['action' => 'edit', $rental->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Apagar Locação'), ['action' => 'delete', $rental->id], ['confirm' => __('Are you sure you want to delete # {0}?', $rental->id)]) ?> </li>
+        <li><?= $this->Form->postLink(__('Desativar Locação'), ['action' => 'delete', $rental->id], ['confirm' => __('Are you sure you want to delete # {0}?', $rental->id)]) ?> </li>
         <li><?= $this->Html->link(__('Voltar'), ['action' => 'index']) ?> </li>
 
     </ul>
@@ -22,9 +22,6 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Cliente') ?></th>
-            <?php
-                debug($rental)
-            ?>
             <td><?= $rental->has('client_id') ? $this->Html->link($rental->user->fullname, ['controller' => 'Users', 'action' => 'view', $rental->client_id]) : '' ?></td>
         </tr>
         <tr>
@@ -78,11 +75,11 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Data prevista de devolução') ?></th>
-            <td><?= h($rental->end_date) ?></td>
+            <td><?= h($return_date) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Data de entrega') ?></th>
-            <td><?= h($rental->return_date) ?></td>
+            <td><?= h($rental->end_date) ?></td>
         </tr>
     </table>
     <div class="related">

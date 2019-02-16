@@ -8,7 +8,7 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Ações') ?></li>
         <li><?= $this->Form->postLink(
-                __('Apagar'),
+                __('Desativar'),
                 ['action' => 'delete', $movieMediaType->id],
                 ['confirm' => __('Are you sure you want to delete # {0}?', $movieMediaType->id)]
             )

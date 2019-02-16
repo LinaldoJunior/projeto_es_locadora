@@ -8,7 +8,7 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Ações') ?></li>
         <li><?= $this->Html->link(__('Editar Filme'), ['action' => 'edit', $movie->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Apagar Filme'), ['action' => 'delete', $movie->id], ['confirm' => __('Are you sure you want to delete # {0}?', $movie->id)]) ?> </li>
+        <li><?= $this->Form->postLink(__('Desativar Filme'), ['action' => 'delete', $movie->id], ['confirm' => __('Are you sure you want to delete # {0}?', $movie->id)]) ?> </li>
         <li><?= $this->Html->link(__('Voltar'), ['action' => 'index']) ?> </li>
     </ul>
 </nav>

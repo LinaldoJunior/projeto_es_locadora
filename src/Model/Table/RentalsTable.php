@@ -52,12 +52,13 @@ class RentalsTable extends Table
         $this->belongsTo('MovieMediaTypes', [
             'foreignKey' => 'movie_media_type_id'
         ]);
+
         $this->belongsTo('Users', [
-            'foreignKey' => 'client_id',
+            'foreignKey' => 'attendant_id',
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('Users', [
-            'foreignKey' => 'attendant_id',
+            'foreignKey' => 'client_id',
             'joinType' => 'INNER'
         ]);
         $this->hasMany('RentalItems', [

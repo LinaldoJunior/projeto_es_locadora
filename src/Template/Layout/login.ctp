@@ -35,28 +35,15 @@
         <ul class="navbar-nav mr-auto">
 
         </ul>
-        <form class="form-inline mt-2 mt-md-0">
-
-            <?= $this->Html->link(
-                $this->Html->tag('i', '', array('class' => 'fas fa-lock')).$this->Html->tag('span', ' Acesso restrito'),
-                '/home/admin',
-                array('escape'=> false,
-                    'class' => 'btn btn-outline-light my-2 my-sm-0',
-                    ))?>
-<!--            <button class="btn btn-outline-light my-2 my-sm-0" type="submit"><span><i class="fas fa-lock"></i></span> Acesso restrito</button>-->
-        </form>
     </div>
 
 </nav>
 
-<div class="container">
-    <div class="row justify-content-center align-items-center">
-        <?=
-        $this->fetch('content')
-        ?>
-    </div>
-</div>
 
+<main role="main" class="container-fluid">
+    <?= $this->Flash->render() ?>
+    <?= $this->fetch('content') ?>
+</main>
 
 
 

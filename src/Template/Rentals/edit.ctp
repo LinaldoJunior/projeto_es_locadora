@@ -13,17 +13,14 @@
 <div class="rentals form large-9 medium-8 columns content">
     <?= $this->Form->create($rental) ?>
     <fieldset>
-        <legend><?= __('Edit Rental') ?></legend>
+        <legend><?= __('Editar Locação') ?></legend>
         <?php
-            echo $this->Form->control('start_date');
-            echo $this->Form->control('end_date', ['empty' => true]);
-            echo $this->Form->control('return_date', ['empty' => true]);
-            echo $this->Form->control('price');
-            echo $this->Form->control('pre_paid');
-            echo $this->Form->control('payment_method_id', ['options' => $paymentMethods]);
-            echo $this->Form->control('client_id', ['options' => $users]);
-            echo $this->Form->control('finished');
-            echo $this->Form->control('movie_media_type_id', ['options' => $movieMediaTypes])
+        echo $this->Form->control('pre_paid', ['label' => 'Valor antecipado']);
+        echo $this->Form->control('payment_method_id', ['options' => $paymentMethods, 'label' => 'Método de pagamento']);
+        echo $this->Form->control('client_id', ['options' => $users, 'label' => 'Cliente']);
+
+
+            echo $this->Form->control('payment_method_id', ['options' => $paymentMethods, 'label' => 'Método de pagamento']);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Salvar')) ?>

@@ -51,38 +51,7 @@ class MoviesController extends AppController
 
     }
 
-    /**
-     * Client View method
-     *
-     * @param string|null $id Movie id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function clientView($id = null)
-    {
 
-        if ($this->Auth->user()){
-            $loggedUser = $this->Auth->user();
-            if ($loggedUser['access_admin'] || $loggedUser['access_attendant']){
-
-                $movie = $this->Movies->get($id, [
-                    'contain' => ['MovieGenres', 'MovieMediaTypes', 'MovieMediaTypes.MediaTypes', 'MovieMediaTypes.Movies']
-                ]);
-
-                $this->set('movie', $movie);
-
-            }
-            else{
-                $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
-            }
-
-        }
-        else{
-            return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
-        }
-        $this->set(compact('user'));
-    }
 
     /**
      * View method

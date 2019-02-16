@@ -501,7 +501,7 @@ class UsersController extends AppController
      */
     public function login()
     {
-        $this->viewBuilder()->setLayout('home');
+        $this->viewBuilder()->setLayout('login');
         if ($this->Auth->user()){
             return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
         }

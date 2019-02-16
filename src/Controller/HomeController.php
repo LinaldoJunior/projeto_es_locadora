@@ -16,7 +16,7 @@ class HomeController extends AppController
             'actions' => ['index']
         ]);
         $this->loadComponent('Auth');
-        $this->Auth->allow(['index']);
+        $this->Auth->allow(['index', 'view']);
     }
 
     public function index()
@@ -26,8 +26,6 @@ class HomeController extends AppController
 
         $movieGenres = $this->MovieGenres->find('list');
         $mediaTypes = $this->MediaTypes->find('list');
-
-//        $movieMediaTypes = $this->MovieMediaTypes
 
             $movies = $this->paginate($this->MovieMediaTypes
             ->find('search', ['search' => $this->request->getQuery()])
@@ -40,29 +38,25 @@ class HomeController extends AppController
             ->order(
                 ['Movies.id' => 'DESC']));
 
-//        $this->paginate = [
-//            'contain' => ['MovieGenres']
-//        ];
-//        $movies = $this->paginate($this->Movies);
-
-
-//        $movies = $this->paginate($this->Movies
-//            ->find('search', ['search' => $this->request->getQuery()])
-//            ->contain([
-//                'MovieGenres',
-//            ])
-//            ->where([
-//                'Movies.active' => true
-//            ])
-//            ->order(
-//                ['Movies.id' => 'DESC']));
-
-//        $this->paginate = [
-//            'contain' => ['MovieGenres']
-//        ];
-//        $movies = $this->paginate($this->Movies);
-
         $this->set(compact('movies', 'movieGenres', 'mediaTypes'));
+    }
+    /**
+     * Client View method
+     *
+     * @param string|null $id Movie id.
+     * @return \Cake\Http\Response|void
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function view($id = null)
+    {
+
+        $this->viewBuilder()->setLayout('home');
+
+        $movie = $this->Movies->get($id, [
+            'contain' => ['MovieGenres', 'MovieMediaTypes', 'MovieMediaTypes.MediaTypes', 'MovieMediaTypes.Movies']
+        ]);
+
+        $this->set('movie', $movie);
     }
     public function admin()
     {

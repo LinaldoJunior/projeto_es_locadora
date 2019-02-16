@@ -80,7 +80,7 @@
 
                 <td><?= h($movie->movie->created) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('Visualização'), ['controller' => 'Movies', 'action' => 'view', $movie->movie->id]) ?>
+                    <?= $this->Html->link(__('Visualização'), ['controller' => 'Home', 'action' => 'view', $movie->movie->id]) ?>
                 </td>
             </tr>
         <?php endforeach; ?>

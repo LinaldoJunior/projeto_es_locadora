@@ -78,7 +78,9 @@ class RentalsController extends AppController
 
 
                 $modify = $rental->movie_media_type->movie->released == 0 ? '+3 days' : '+1 day';
-                $interval = $rental->start_date->modify($modify)->diff(new DateTime());
+                $return_date = $rental->start_date->modify($modify);
+                $interval = $rental->end_date ? $rental->start_date->modify($modify)->diff($rental->end_date) : $rental->start_date->modify($modify)->diff(new DateTime());
+
                 $dias = $interval->days;
 
 
@@ -86,7 +88,7 @@ class RentalsController extends AppController
 
                 $total = $saldo + $multa - $rental->pre_paid;
 
-                $this->set(compact('rental', 'saldo', 'dias', 'multa', 'total'));
+                $this->set(compact('rental', 'saldo', 'dias', 'multa', 'total', 'return_date'));
             }
             else{
                 $this->Flash->error(__("You can't do that."));
@@ -113,9 +115,8 @@ class RentalsController extends AppController
                 $rental = $this->Rentals->newEntity();
                 if ($this->request->is('post')) {
                     $ren = $this->request->getData();
-                    $ren['attendant_id'] = $loggedUser->id;
+                    $ren['attendant_id'] = $loggedUser['id'];
                     $rental = $this->Rentals->patchEntity($rental, $ren);
-                    debug($rental);
             if ($this->Rentals->save($rental)) {
                 $this->Flash->success(__('The rental has been saved.'));
 
@@ -153,7 +154,7 @@ class RentalsController extends AppController
     {
         if ($this->Auth->user()){
             $loggedUser = $this->Auth->user();
-            if ($loggedUser['access_admin']){
+            if ($loggedUser['access_admin'] || $loggedUser['access_attendant']){
                 $rental = $this->Rentals->get($id, [
                     'contain' => []
                 ]);
@@ -243,6 +244,44 @@ class RentalsController extends AppController
                     return $this->redirect(['action' => 'index']);
                 }
                 $this->Flash->error(__('The rental could not be enabled. Please, try again.'));
+
+                return $this->redirect(['action' => 'index']);
+
+            }
+            else{
+                $this->Flash->error(__("You can't do that."));
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
+            }
+
+        }
+        else{
+            return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+        }
+    }
+    /**
+     * Finish method
+     *
+     * @param string|null $id Rental id.
+     * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function finish($id = null)
+    {
+        if ($this->Auth->user()){
+            $loggedUser = $this->Auth->user();
+            if ($loggedUser['access_admin'] || $loggedUser['access_attendant']){
+
+                $this->request->allowMethod(['post', 'delete']);
+                $rental = $this->Rentals->get($id);
+
+                $rental['end_date'] = new DateTime();
+                $rental['finished'] = 1;
+                if ($this->Rentals->save($rental)) {
+                    $this->Flash->success(__('The rental has been finished.'));
+
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('The rental could not be finished. Please, try again.'));
 
                 return $this->redirect(['action' => 'index']);
 
