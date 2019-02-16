@@ -412,14 +412,37 @@ class UsersController extends AppController
                 $user = $this->Users->get($id);
 
                 $user['active'] = 0;
-                if ($this->Users->save($user)) {
-                    $this->Flash->success(__('The user has been disabled.'));
+                $childs = $this->Users->find('all')
+
+                    ->where(['Users.parent_id' => $id])->toArray();
+                if ($childs){
+
+                    foreach ($childs as $child){
+                        $child['active'] = 0;
+                        $this->Users->save($child);
+                    }
+                    if ($this->Users->save($user)) {
+                        $this->Flash->success(__('The user has been disabled.'));
+
+                        return $this->redirect(['action' => 'index']);
+                    }
+                    $this->Flash->error(__('The user could not be disabled. Please, try again.'));
+
+                    return $this->redirect(['action' => 'index']);
+
+                }
+                else{
+                    if ($this->Users->save($user)) {
+                        $this->Flash->success(__('The user has been disabled.'));
+
+                        return $this->redirect(['action' => 'index']);
+                    }
+                    $this->Flash->error(__('The user could not be disabled. Please, try again.'));
 
                     return $this->redirect(['action' => 'index']);
                 }
-                $this->Flash->error(__('The user could not be disabled. Please, try again.'));
 
-                return $this->redirect(['action' => 'index']);
+
             }
             else{
                 $this->Flash->error(__("You can't do that."));

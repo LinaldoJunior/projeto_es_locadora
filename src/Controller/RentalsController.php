@@ -115,11 +115,12 @@ class RentalsController extends AppController
                     $ren = $this->request->getData();
                     $ren['attendant_id'] = 2;
                     $rental = $this->Rentals->patchEntity($rental, $ren);
-//            if ($this->Rentals->save($rental)) {
-//                $this->Flash->success(__('The rental has been saved.'));
-//
-//                return $this->redirect(['action' => 'index']);
-//            }
+                    debug($rental);
+            if ($this->Rentals->save($rental)) {
+                $this->Flash->success(__('The rental has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
                     $this->Flash->error(__('The rental could not be saved. Please, try again.'));
                 }
                 $paymentMethods = $this->Rentals->PaymentMethods->find('list', ['limit' => 200]);
