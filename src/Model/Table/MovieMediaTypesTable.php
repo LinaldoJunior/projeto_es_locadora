@@ -215,10 +215,7 @@ class MovieMediaTypesTable extends Table
             ->requirePresence('quantity', 'create')
             ->allowEmptyString('quantity', false);
 
-        $validator
-            ->boolean('active')
-            ->requirePresence('active', 'create')
-            ->allowEmptyString('active', false);
+
 
         return $validator;
     }

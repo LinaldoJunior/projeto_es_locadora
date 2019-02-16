@@ -12,7 +12,7 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\PaymentMethodsTable|\Cake\ORM\Association\BelongsTo $PaymentMethods
  * @property |\Cake\ORM\Association\BelongsTo $MovieMediaTypes
  * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
- * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
+ * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Clients
  * @property \App\Model\Table\RentalItemsTable|\Cake\ORM\Association\HasMany $RentalItems
  *
  * @method \App\Model\Entity\Rental get($primaryKey, $options = [])
@@ -94,9 +94,6 @@ class RentalsTable extends Table
         $validator
             ->allowEmptyString('finished');
 
-        $validator
-            ->boolean('active')
-            ->allowEmptyString('active', false);
 
         return $validator;
     }

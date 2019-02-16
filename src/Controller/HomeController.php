@@ -66,6 +66,7 @@ class HomeController extends AppController
     }
     public function admin()
     {
+
         $this->viewBuilder()->setLayout('internal');
         $user = $this->Auth->user();
 

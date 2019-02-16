@@ -6,7 +6,7 @@
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
+        <li class="heading"><?= __('Ações') ?></li>
         <li><?= $this->Form->postLink(
                 __('Delete'),
                 ['action' => 'delete', $user->id],
@@ -26,12 +26,9 @@
         <legend><?= __('Edit User') ?></legend>
         <?php
             echo $this->Form->control('fullname');
-            echo $this->Form->control('access_admin');
-            echo $this->Form->control('access_attendant');
             echo $this->Form->control('username');
             echo $this->Form->control('password');
             echo $this->Form->control('gender');
-            echo $this->Form->control('user_id');
             echo $this->Form->control('address');
             echo $this->Form->control('phone_res');
             echo $this->Form->control('address_work');
@@ -39,7 +36,6 @@
             echo $this->Form->control('cellphone');
             echo $this->Form->control('cpf');
             echo $this->Form->control('birthdate');
-            echo $this->Form->control('active');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

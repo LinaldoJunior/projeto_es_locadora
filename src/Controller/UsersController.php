@@ -51,7 +51,7 @@ class UsersController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -81,7 +81,7 @@ class UsersController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -114,7 +114,7 @@ class UsersController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
         }
         else{
@@ -157,7 +157,7 @@ class UsersController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -193,7 +193,7 @@ class UsersController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -233,7 +233,7 @@ class UsersController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -270,7 +270,7 @@ class UsersController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -338,7 +338,7 @@ class UsersController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -384,7 +384,7 @@ class UsersController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -423,7 +423,7 @@ class UsersController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -462,7 +462,7 @@ class UsersController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }

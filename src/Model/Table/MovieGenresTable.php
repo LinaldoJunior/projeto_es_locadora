@@ -58,9 +58,6 @@ class MovieGenresTable extends Table
             ->requirePresence('name', 'create')
             ->allowEmptyString('name', false);
 
-        $validator
-            ->requirePresence('active', 'create')
-            ->allowEmptyString('active', false);
 
         return $validator;
     }

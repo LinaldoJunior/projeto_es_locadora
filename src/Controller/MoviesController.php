@@ -25,8 +25,9 @@ class MoviesController extends AppController
      */
     public function index()
     {
+        $user =$this->Auth->user();
 
-        if ($this->Auth->user()){
+        if ($user){
             $loggedUser = $this->Auth->user();
             if ($loggedUser['access_admin'] || $loggedUser['access_attendant']){
 
@@ -40,13 +41,14 @@ class MoviesController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
         else{
             return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
         }
+
     }
 
     /**
@@ -72,13 +74,14 @@ class MoviesController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
         else{
             return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
         }
+        $this->set(compact('user'));
     }
 
     /**
@@ -88,7 +91,8 @@ class MoviesController extends AppController
      */
     public function add()
     {
-        if ($this->Auth->user()){
+        $user =$this->Auth->user();
+        if ($user){
             $loggedUser = $this->Auth->user();
             if ($loggedUser['access_admin'] ){
 
@@ -107,13 +111,14 @@ class MoviesController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
         else{
             return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
         }
+        $this->set(compact('user'));
     }
 
     /**
@@ -146,7 +151,7 @@ class MoviesController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -187,7 +192,7 @@ class MoviesController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -228,7 +233,7 @@ class MoviesController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }

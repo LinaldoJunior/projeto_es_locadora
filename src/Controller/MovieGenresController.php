@@ -38,7 +38,7 @@ class MovieGenresController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -71,7 +71,7 @@ class MovieGenresController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -97,6 +97,7 @@ class MovieGenresController extends AppController
                 $movieGenre = $this->MovieGenres->newEntity();
                 if ($this->request->is('post')) {
                     $movieGenre = $this->MovieGenres->patchEntity($movieGenre, $this->request->getData());
+                    debug($movieGenre);
                     if ($this->MovieGenres->save($movieGenre)) {
                         $this->Flash->success(__('The movie genre has been saved.'));
 
@@ -109,7 +110,7 @@ class MovieGenresController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -150,7 +151,7 @@ class MovieGenresController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -190,7 +191,7 @@ class MovieGenresController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -229,7 +230,7 @@ class MovieGenresController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }

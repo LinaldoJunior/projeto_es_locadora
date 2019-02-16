@@ -38,7 +38,7 @@ class PaymentMethodsController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -73,7 +73,7 @@ class PaymentMethodsController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -110,7 +110,7 @@ class PaymentMethodsController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -151,7 +151,7 @@ class PaymentMethodsController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -191,7 +191,7 @@ class PaymentMethodsController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -231,7 +231,7 @@ class PaymentMethodsController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }

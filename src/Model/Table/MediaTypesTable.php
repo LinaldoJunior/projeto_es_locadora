@@ -69,9 +69,7 @@ class MediaTypesTable extends Table
             ->requirePresence('price', 'create')
             ->allowEmptyString('price', false);
 
-        $validator
-            ->requirePresence('active', 'create')
-            ->allowEmptyString('active', false);
+
 
         return $validator;
     }

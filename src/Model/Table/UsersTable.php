@@ -133,8 +133,6 @@ class UsersTable extends Table
             ->requirePresence('birthdate', 'create')
             ->allowEmptyDateTime('birthdate', false);
 
-        $validator
-            ->allowEmptyString('active');
 
         return $validator;
     }

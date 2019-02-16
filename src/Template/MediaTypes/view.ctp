@@ -6,7 +6,7 @@
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
+        <li class="heading"><?= __('Ações') ?></li>
         <li><?= $this->Html->link(__('Edit Media Type'), ['action' => 'edit', $mediaType->id]) ?> </li>
         <li><?= $this->Form->postLink(__('Delete Media Type'), ['action' => 'delete', $mediaType->id], ['confirm' => __('Are you sure you want to delete # {0}?', $mediaType->id)]) ?> </li>
         <li><?= $this->Html->link(__('List Media Types'), ['action' => 'index']) ?> </li>
@@ -55,7 +55,7 @@
                 <th scope="col"><?= __('Active') ?></th>
                 <th scope="col"><?= __('Created') ?></th>
                 <th scope="col"><?= __('Modified') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
+                <th scope="col" class="actions"><?= __('Ações') ?></th>
             </tr>
             <?php foreach ($mediaType->movie_media_types as $movieMediaTypes): ?>
             <tr>

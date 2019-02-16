@@ -25,9 +25,10 @@
     <?php
     echo $this->Html->image('imperial.png', array('class' => 'img-logo','url' => array(
         'controller' => 'Home',
-        'action' => 'index'
+        'action' => 'admin'
     )));
     ?>
+
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -37,20 +38,25 @@
         </ul>
         <form class="form-inline mt-2 mt-md-0">
 
+
             <?= $this->Html->link(
-                $this->Html->tag('i', '', array('class' => 'fas fa-lock')).$this->Html->tag('span', ' Acesso restrito'),
-                '/home/admin',
+                $this->Html->tag('i', '', array('class' => 'fas fa-sign-out-alt')).$this->Html->tag('span', ' Sair'),
+                '/users/logout',
                 array('escape'=> false,
                     'class' => 'btn btn-outline-light my-2 my-sm-0',
                     ))?>
-<!--            <button class="btn btn-outline-light my-2 my-sm-0" type="submit"><span><i class="fas fa-lock"></i></span> Acesso restrito</button>-->
         </form>
     </div>
 </nav>
 
-<main role="main" class="container-fluid">
-    <?= $this->fetch('content') ?>
-</main>
+<!--<main role="main" class="container-fluid h-100">-->
+<!---->
+<!--</main>-->
+<div class="container clearfix h-100">
+    <div class="row h-100 justify-content-center align-items-center">
+        <?= $this->fetch('content') ?>
+    </div>
+</div>
 
 
 

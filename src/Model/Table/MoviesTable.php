@@ -147,7 +147,6 @@ class MoviesTable extends Table
 
         $validator
             ->scalar('sinopse')
-            ->maxLength('sinopse', 45)
             ->allowEmptyString('sinopse');
 
         $validator
@@ -160,8 +159,7 @@ class MoviesTable extends Table
             ->allowEmptyString('poster');
 
         $validator
-            ->requirePresence('active', 'create')
-            ->allowEmptyString('active', false);
+            ->allowEmptyString('active');
 
         return $validator;
     }

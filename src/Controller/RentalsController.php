@@ -28,6 +28,7 @@ class RentalsController extends AppController
     public function index()
     {
 
+//        $this->viewBuilder()->setLayout('controller');
         if ($this->Auth->user()){
             $loggedUser = $this->Auth->user();
             if ($loggedUser['access_admin'] || $loggedUser['access_attendant']){
@@ -41,7 +42,7 @@ class RentalsController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -89,7 +90,7 @@ class RentalsController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -130,7 +131,7 @@ class RentalsController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -171,7 +172,7 @@ class RentalsController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -209,7 +210,7 @@ class RentalsController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }
@@ -247,7 +248,7 @@ class RentalsController extends AppController
             }
             else{
                 $this->Flash->error(__("You can't do that."));
-                return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+                return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
             }
 
         }

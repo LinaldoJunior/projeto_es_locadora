@@ -6,7 +6,7 @@
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
+        <li class="heading"><?= __('Ações') ?></li>
         <li><?= $this->Html->link(__('Edit Rental Item'), ['action' => 'edit', $rentalItem->id]) ?> </li>
         <li><?= $this->Form->postLink(__('Delete Rental Item'), ['action' => 'delete', $rentalItem->id], ['confirm' => __('Are you sure you want to delete # {0}?', $rentalItem->id)]) ?> </li>
         <li><?= $this->Html->link(__('List Rental Items'), ['action' => 'index']) ?> </li>

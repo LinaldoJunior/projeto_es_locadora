@@ -4,19 +4,19 @@ a.disabled {
 }
 
 a:hover {
-    color: #15848F;
+    color: #B4131D;
 }
 
 a {
-    color: #1798A5;
+    color: #B4131D;
 }
 
 .side-nav li a:not(.button) {
-    color: #15848F;
+    color: #B4131D;
 }
 
 .side-nav li a:not(.button):hover {
-    color: #15848F;
+    color: #B4131D;
 }
 
 header {
@@ -34,7 +34,7 @@ header .header-title {
 }
 
 legend {
-    color:#15848F;
+    color:#B4131D;
 }
 
 .row {
@@ -43,13 +43,13 @@ legend {
 
 .actions.columns {
     margin-top:1rem;
-    border-left: 5px solid #15848F;
+    border-left: 5px solid #B4131D;
     padding-left: 15px;
     padding: 32px 20px;
 }
 
 .actions.columns h3 {
-    color:#15848F;
+    color:#B4131D;
 }
 
 .related table {
@@ -319,20 +319,20 @@ pre {
 }
 
 .top-bar.expanded .title-area {
-    background: #01545b;
+    background: #73171D;
 }
 
 .top-bar.expanded, .top-bar,.top-bar-section ul li,.top-bar-section li:not(.has-form) a:not(.button) {
-    background: #116d76;
+    background: #A6141D;
 }
 
 .top-bar-section li:not(.has-form) a:not(.button):hover {
-    background-color: #308e97;
-    background: #308e97;
+    background-color: #B4131D;
+    background: #B4131D;
 }
 
 .side-nav li.heading {
-    color: #1798A5;
+    color: #B4131D;
     font-size: 0.875rem;
     font-weight: bold;
     text-transform: uppercase;
@@ -367,15 +367,15 @@ table tr {
 }
 
 table thead tr {
-    border-bottom: 1px solid #1798A5;
+    border-bottom: 1px solid #B4131D;
 }
 
 table tr th {
     padding: 0.5625rem 0.625rem;
     font-size: 0.875rem;
-    color: #1798A5;
+    color: #B4131D;
     text-align: left;
-    border-bottom: 2px solid #1798A5;
+    border-bottom: 2px solid #B4131D;
 }
 
 table tr:nth-of-type(even) {
@@ -389,7 +389,7 @@ fieldset {
 }
 
 fieldset legend {
-    border-bottom: 2px solid #1798A5;
+    border-bottom: 2px solid #B4131D;
     width: 100%;
     line-height: 2rem;
 }
@@ -461,7 +461,7 @@ div.message.hidden {
 .vertical-table th {
     padding: 0.5625rem 0.625rem;
     font-size: 0.875rem;
-    color: #1798A5;
+    color: #B4131D;
     border: none;
     text-align: left;
 }
