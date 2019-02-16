@@ -15,6 +15,8 @@ class HomeController extends AppController
         $this->loadComponent('Search.Prg', [
             'actions' => ['index']
         ]);
+        $this->loadComponent('Auth');
+        $this->Auth->allow(['index']);
     }
 
     public function index()
@@ -61,5 +63,12 @@ class HomeController extends AppController
 //        $movies = $this->paginate($this->Movies);
 
         $this->set(compact('movies', 'movieGenres', 'mediaTypes'));
+    }
+    public function admin()
+    {
+        $this->viewBuilder()->setLayout('internal');
+        $user = $this->Auth->user();
+
+        $this->set(compact('user'));
     }
 }

@@ -370,7 +370,13 @@ class UsersController extends AppController
                     if ($this->Users->save($user)) {
                         $this->Flash->success(__('The user has been saved.'));
 
-                        return $this->redirect(['action' => 'index']);
+                        if ($user['access_attendant']){
+                            return $this->redirect(['action' => 'attendants']);
+                        }
+                        else {
+                            return $this->redirect(['action' => 'clients']);
+                        }
+
                     }
                     $this->Flash->error(__('The user could not be saved. Please, try again.'));
                 }
@@ -473,14 +479,20 @@ class UsersController extends AppController
     public function login()
     {
         $this->viewBuilder()->setLayout('home');
-        if ($this->request->is('post')) {
-            $user = $this->Auth->identify();
-            if ($user) {
-                $this->Auth->setUser($user);
-                return $this->redirect($this->Auth->redirectUrl());
-            }
-            $this->Flash->error(__('Usuário ou senha ínvalido, tente novamente'));
+        if ($this->Auth->user()){
+            return $this->redirect(['controller' => 'Home' ,'action' => 'admin']);
         }
+        else{
+            if ($this->request->is('post')) {
+                $user = $this->Auth->identify();
+                if ($user) {
+                    $this->Auth->setUser($user);
+                    return $this->redirect($this->Auth->redirectUrl());
+                }
+                $this->Flash->error(__('Usuário ou senha ínvalido, tente novamente'));
+            }
+        }
+
     }
     /**
      * logout method
@@ -490,7 +502,15 @@ class UsersController extends AppController
      */
     public function logout()
     {
-        return $this->redirect($this->Auth->logout());
+        $this->Auth->logout();
+        if ($this->Auth->user()){
+
+        }
+        else{
+            return $this->redirect(['controller' => 'Home' ,'action' => 'index']);
+        }
+
+
     }
 
 }
