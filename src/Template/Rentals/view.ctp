@@ -8,6 +8,7 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Ações') ?></li>
         <li><?= $this->Html->link(__('Editar Locação'), ['action' => 'edit', $rental->id]) ?> </li>
+        <li><?= $this->Form->postLink(__('Finalizar Locação'), ['action' => 'finish', $rental->id], ['confirm' => __('Are you sure you want to finish # {0}?', $rental->id)]) ?> </li>
         <li><?= $this->Form->postLink(__('Desativar Locação'), ['action' => 'delete', $rental->id], ['confirm' => __('Are you sure you want to delete # {0}?', $rental->id)]) ?> </li>
         <li><?= $this->Html->link(__('Voltar'), ['action' => 'index']) ?> </li>
 

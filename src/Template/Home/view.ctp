@@ -4,11 +4,13 @@
  * @var \App\Model\Entity\Movie $movie
  */
 ?>
-<div class="row">
-    <div class="col-lg-12">
+<div class="row justify-content-around">
+    <div class="col-lg-8">
         <div class="card-deck">
             <div class="card" style="width: 20rem;">
                 <?= $this->Html->image($movie->poster, ['class' => 'card-img-top']) ?>
+            </div>
+            <div class="card">
                 <div class="card-body">
                     <h5 class="card-title"><?= h($movie->name) ?></h5>
                     <p class="card-text"><?= h($movie->sinopse) ?></p>
@@ -21,6 +23,9 @@
                     <li class="list-group-item">Nota: <?= $this->Number->format($movie->grade) ?></li>
                 </ul>
             </div>
+        </div>
+        <div class="col-6">
+
         </div>
     </div>
 </div>

@@ -1,5 +1,6 @@
 <html lang="en"><head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <?= $this->Html->meta('icon') ?>
 
     <title>       <?= $this->fetch('title') ?></title>
@@ -43,18 +44,19 @@
                 array('escape'=> false,
                     'class' => 'btn btn-outline-light my-2 my-sm-0',
                     ))?>
-<!--            <button class="btn btn-outline-light my-2 my-sm-0" type="submit"><span><i class="fas fa-lock"></i></span> Acesso restrito</button>-->
         </form>
     </div>
 
 </nav>
 
+<!--<main class="container">-->
+<!--    -->
+<!--</main>-->
 <div class="container">
-    <div class="row justify-content-center align-items-center">
-        <?=
-        $this->fetch('content')
-        ?>
-    </div>
+    <!-- Content here -->
+    <?=
+    $this->fetch('content')
+    ?>
 </div>
 
 
@@ -114,4 +116,5 @@
 
 
 
-</body></html>
+</body>
+</html>

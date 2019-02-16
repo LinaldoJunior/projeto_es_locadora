@@ -6,7 +6,7 @@
 ?>
 <div class="movies index large-9 medium-8 columns content">
     <h3><?= __('Filmes') ?></h3>
-    <table cellpadding="0" cellspacing="0" class="table table-dark">
+    <table class="table table-striped table-dark">
 
         <thead>
         <tr>
@@ -21,13 +21,12 @@
 
 
 
-            <th scope="col"><?= $this->Paginator->sort('created', ['label' => 'Cadastrado em']) ?></th>
+
             <th scope="col" class="actions"><?= __('Ações') ?></th>
         </tr>
         <tr>
             <th>
                 <?= $this->Form->create(null, ['valueSources' => 'query']); ?>
-                <!--                    // You'll need to populate $authors in the template from your controller-->
                 </th>
             <th></th>
             <th>
@@ -35,7 +34,7 @@
                 <?= $this->Form->input('movie_name', ['label' => '']); ?>
             </th>
             <th>
-                <?= $this->Form->input('movie_year', ['label' => '']);?>
+                <?= $this->Form->input('movie_year', ['label' => '', 'style' => array('' => 'width: 50px')]);?>
             </th>
             <th>
                 <?= $this->Form->input('movie_director', ['label' => '']);?>
@@ -50,10 +49,8 @@
                 <?= $this->Form->input('movie_type_id', ['label' => '', 'empty' => __("Selecione"), 'options' => $mediaTypes]);?>
             </th>
             <th>
-                <?= $this->Form->button('Filtrar', ['type' => 'submit']); ?>
-            </th>
-            <th>
-                <?= $this->Html->link('Reset', ['action' => 'index']);?>
+                <?= $this->Form->button('Filtrar', ['type' => 'submit', 'class' => 'btn  btn-sm btn-outline-primary']); ?>
+                <?= $this->Html->link('Reset', ['action' => 'index'], ['class' => 'btn btn-sm btn-outline-warning']);?>
                 <?= $this->Form->end();?>
             </th>
         </tr>
@@ -64,7 +61,7 @@
             <tr>
                 <td></td>
                 <td><?php
-                    echo $this->Html->image($movie->movie->poster, ['style' =>array('height: 200px;')]);
+                    echo $this->Html->image($movie->movie->poster, ['style' =>array('height: 150px;')]);
 
                     ?></td>
                 <td><?= h($movie->movie->name) ?></td>
@@ -77,8 +74,6 @@
                 <td><?= $movie->movie->cast ?></td>
                 <td><?= $movie->movie->movie_genre->name ?></td>
                 <td><?= $movie->media_type->name ?></td>
-
-                <td><?= h($movie->movie->created) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('Visualização'), ['controller' => 'Home', 'action' => 'view', $movie->movie->id]) ?>
                 </td>
