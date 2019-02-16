@@ -35,8 +35,8 @@
             <td><?= $this->Number->format($movieMediaType->id) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Quatity') ?></th>
-            <td><?= $this->Number->format($movieMediaType->quatity) ?></td>
+            <th scope="row"><?= __('Quantity') ?></th>
+            <td><?= $this->Number->format($movieMediaType->quantity) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Active') ?></th>

@@ -219,8 +219,8 @@ class UsersController extends AppController
                 if ($this->request->is('post')) {
                     $client = $this->request->getData();
                     $client['access_admin'] = 0;
-                    $client['access_attendant'] = 1;
                     $user = $this->Users->patchEntity($user, $client);
+                    debug($user);
                     if ($this->Users->save($user)) {
                         $this->Flash->success(__('The user has been saved.'));
 

@@ -8,6 +8,7 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Ações') ?></li>
         <li><?= $this->Html->link(__('Novo atendente'), ['action' => 'addAttendant']) ?></li>
+        <li><?= $this->Html->link(__('Voltar'), ['controller' => 'Home','action' => 'admin']) ?></li>
     </ul>
 </nav>
 <div class="users index large-9 medium-8 columns content">

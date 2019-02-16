@@ -7,7 +7,7 @@
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Ações') ?></li>
-        <li><?= $this->Html->link(__('Listar Atendentes'), ['action' => 'attendants']) ?></li>
+        <li><?= $this->Html->link(__('Voltar'), ['action' => 'attendants']) ?></li>
     </ul>
 </nav>
 <div class="users form large-9 medium-8 columns content">
@@ -24,11 +24,12 @@
                 'MALE' => __('Masculino'),
                 'OTHER' => __('Outro')
             ),'required' => true]);
-//            echo $this->Form->control('address', ['label' => __('Endereço completo')]);
-//            echo $this->Form->control('phone_res', ['label' => __('Telefone residencial')]);
-//            echo $this->Form->control('cellphone', ['label' => __('Celular')]);
-//
-//            echo $this->Form->control('birthdate', ['label' => __('Data de nascimento' )]);
+            echo $this->Form->control('birthdate', ['label' => __('Data de nascimento' ), 'default' => '1960-09-10 06:40:00', 'selected' => array(
+                'day' => '',
+                'month' => '',
+                'year' => ''
+            )]);
+
         ?>
     </fieldset>
     <?= $this->Form->button(__('Salvar')) ?>

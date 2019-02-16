@@ -33,11 +33,13 @@
             echo $this->Form->control('duration');
             echo $this->Form->control('cast');
             echo $this->Form->control('sinopse');
-            echo $this->Form->control('released');
+        echo $this->Form->control('released',  ['label' => 'Lançamento', 'options' => array(
+            1 => __('Sim'),
+            0 => __('Não')
+        )]);
             echo $this->Form->control('poster');
-            echo $this->Form->control('active');
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->button(__('Salvar')) ?>
     <?= $this->Form->end() ?>
 </div>

@@ -8,6 +8,7 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Ações') ?></li>
         <li><?= $this->Html->link(__('Nova locação'), ['action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('Voltar'), ['controller' => 'Home','action' => 'admin']) ?></li>
     </ul>
 </nav>
 <div class="rentals index large-9 medium-8 columns content">

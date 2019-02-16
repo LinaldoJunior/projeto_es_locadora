@@ -7,17 +7,12 @@
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Ações') ?></li>
-        <li><?= $this->Html->link(__('New Movie Media Type'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Movies'), ['controller' => 'Movies', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Movie'), ['controller' => 'Movies', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Media Types'), ['controller' => 'MediaTypes', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Media Type'), ['controller' => 'MediaTypes', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Rentals'), ['controller' => 'Rentals', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Rental'), ['controller' => 'Rentals', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('Novo item do estoque'), ['action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('Voltar'), ['controller' => 'Home','action' => 'admin']) ?></li>
     </ul>
 </nav>
 <div class="movieMediaTypes index large-9 medium-8 columns content">
-    <h3><?= __('Tipos de mídia por filme') ?></h3>
+    <h3><?= __('Estoque') ?></h3>
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>

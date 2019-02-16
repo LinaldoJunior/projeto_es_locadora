@@ -22,6 +22,6 @@
             echo $this->Form->control('active');
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->button(__('Salvar')) ?>
     <?= $this->Form->end() ?>
 </div>

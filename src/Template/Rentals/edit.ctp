@@ -26,6 +26,6 @@
             echo $this->Form->control('movie_media_type_id', ['options' => $movieMediaTypes])
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->button(__('Salvar')) ?>
     <?= $this->Form->end() ?>
 </div>

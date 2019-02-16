@@ -29,10 +29,10 @@
         <?php
             echo $this->Form->control('movie_id', ['options' => $movies]);
             echo $this->Form->control('media_type_id', ['options' => $mediaTypes]);
-            echo $this->Form->control('quatity');
+            echo $this->Form->control('quantity');
             echo $this->Form->control('active');
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->button(__('Salvar')) ?>
     <?= $this->Form->end() ?>
 </div>

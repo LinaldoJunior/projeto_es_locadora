@@ -97,7 +97,7 @@ class MovieGenresController extends AppController
                 $movieGenre = $this->MovieGenres->newEntity();
                 if ($this->request->is('post')) {
                     $movieGenre = $this->MovieGenres->patchEntity($movieGenre, $this->request->getData());
-                    debug($movieGenre);
+
                     if ($this->MovieGenres->save($movieGenre)) {
                         $this->Flash->success(__('The movie genre has been saved.'));
 
