@@ -7,19 +7,16 @@
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Ações') ?></li>
-        <li><?= $this->Html->link(__('List Media Types'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Movie Media Types'), ['controller' => 'MovieMediaTypes', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Movie Media Type'), ['controller' => 'MovieMediaTypes', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('Voltar'), ['action' => 'index']) ?></li>
     </ul>
 </nav>
 <div class="mediaTypes form large-9 medium-8 columns content">
     <?= $this->Form->create($mediaType) ?>
     <fieldset>
-        <legend><?= __('Add Media Type') ?></legend>
+        <legend><?= __('Novo tipo de mídia') ?></legend>
         <?php
-            echo $this->Form->control('name');
-            echo $this->Form->control('price');
-            echo $this->Form->control('active');
+            echo $this->Form->control('name', ['label' => 'Nome']);
+            echo $this->Form->control('price', ['label' => 'Preço']);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Salvar')) ?>

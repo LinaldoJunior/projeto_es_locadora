@@ -7,9 +7,7 @@
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Ações') ?></li>
-        <li><?= $this->Html->link(__('Listar filmes'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('Listar gêneros'), ['controller' => 'MovieGenres', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('Novo gênero'), ['controller' => 'MovieGenres', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('Voltar'), ['action' => 'index']) ?></li>
     </ul>
 </nav>
 <div class="movies form large-9 medium-8 columns content">
@@ -19,7 +17,8 @@
         <?php
             echo $this->Form->control('name',  ['label' => 'Nome']);
             echo $this->Form->control('director',  ['label' => 'Diretor']);
-            echo $this->Form->control('year', ['empty' => true, 'label' => 'Ano']);
+            echo $this->Form->control('year', ['empty' => true, 'label' => 'Ano', 'default' => '1985-12-28 00:00:00']);
+
             echo $this->Form->control('movie_gender_id', ['options' => $movieGenres, 'label' => 'Gênero']);
             echo $this->Form->control('grade',  ['label' => 'Avaliação']);
             echo $this->Form->control('duration',  ['label' => 'Duração']);

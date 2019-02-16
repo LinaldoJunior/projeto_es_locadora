@@ -30,7 +30,7 @@
                 <td><?= $this->Number->format($user->id) ?></td>
                 <td><?= h($user->fullname) ?></td>
                 <td><?= h($user->username) ?></td>
-                <td><?= $this->Number->format($user->active) ?></td>
+                <td><?= ($user->active == 0 ? 'Não' : 'Sim') ?></td>
                 <td><?= h($user->created) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('Visualizar'), ['action' => 'view', $user->id]) ?>

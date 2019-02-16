@@ -62,7 +62,7 @@ class MediaTypesController extends AppController
             if ($loggedUser['access_admin']){
 
                 $mediaType = $this->MediaTypes->get($id, [
-                    'contain' => ['MovieMediaTypes']
+                    'contain' => ['MovieMediaTypes', 'MovieMediaTypes.Movies']
                 ]);
 
                 $this->set('mediaType', $mediaType);
