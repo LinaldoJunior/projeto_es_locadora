@@ -21,6 +21,7 @@
                 <th scope="col"><?= $this->Paginator->sort('end_date', ['label' => 'Entrega prevista']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('client_id', ['label' => 'Cliente']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('finished', ['label' => 'Concluída']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('active', ['label' => 'Ativo']) ?></th>
                 <th scope="col" class="actions"><?= __('Ações') ?></th>
             </tr>
         </thead>
@@ -32,6 +33,7 @@
                 <td><?= h($rental->end_date) ?></td>
                 <td><?= $rental->has('user') ? $this->Html->link($rental->user->fullname, ['controller' => 'Users', 'action' => 'view', $rental->user->id]) : '' ?></td>
                 <td><?= ($rental->finished == 0 ? 'Não' : 'Sim') ?></td>
+                <td><?= ($rental->active == 0 ? 'Não' : 'Sim') ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('Visualizar'), ['action' => 'view', $rental->id]) ?>
                     <?= $this->Html->link(__('Editar'), ['action' => 'edit', $rental->id]) ?>

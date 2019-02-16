@@ -61,7 +61,13 @@
             <tr>
                 <td></td>
                 <td><?php
-                    echo $this->Html->image($movie->movie->poster, ['style' =>array('height: 150px;')]);
+                    echo $this->Html->image($movie->movie->poster, array('style' =>array('height: 150px;'),'url' => array(
+                        'controller' => 'Home',
+                        'action' => 'view',
+                        $movie->movie->id
+
+                    )));
+//                    echo $this->Html->image($movie->movie->poster, ['style' =>array('height: 150px;')]);
 
                     ?></td>
                 <td><?= h($movie->movie->name) ?></td>
