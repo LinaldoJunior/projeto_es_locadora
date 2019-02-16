@@ -170,7 +170,7 @@ class MovieMediaTypesTable extends Table
                     foreach ($args as $arg) {
                         $data[] = [
                             'OR' => [
-                                ['Movies.movie_gender_id LIKE' => '%' . $arg . '%']
+                                ['Movies.movie_gender_id' =>  $arg]
                             ]
                         ];
                     }
