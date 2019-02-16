@@ -133,3 +133,8 @@
     </div>
 
 </div>
+<style>
+    body{
+        line-height: 1rem !important;
+    }
+</style>

@@ -33,7 +33,7 @@
         echo $this->Form->control('movie_media_type_id', ['options' => $options, 'label' => 'Filme']);
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->button(__('Submit'), array('class' => 'btn btn-success')) ?>
     <?= $this->Form->end() ?>
 </div>
 
