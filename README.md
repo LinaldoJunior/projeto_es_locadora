@@ -15,6 +15,8 @@ de suas atividades administrativas e operacionais, e de seus ativos disponíveis
 
 ## Descrição do produto:
 
+Link do site: https://locadoraphp.herokuapp.com
+
 O projeto envolve o desenvolvimento de um sistema de informação para
 gerenciamento de usuários, filmes, empréstimo e devolução, atendendo a público
 específico. O público alvo do sistema é composto por usuários
