@@ -1,7 +1,7 @@
 # Projeto de Engenharia de Software (CIN-UFPE)
 Repositório do projeto de engenharia de software: Sistema de Informações da Vídeo Locadora Imperial
 
-TURMA: MESTRADO EM CIÊNCIAS DA COMPUTAÇÃO, ÊNFASE: GESTÃO DE TECNOLOGIA DA INFORMAÇÃO (2018)
+TURMA: MESTRADO PROFISSIONAL EM CIÊNCIA DA COMPUTAÇÃO, ÊNFASE: GESTÃO DE TECNOLOGIA DA INFORMAÇÃO (2018)
 
 Professor: Vinicius Cardoso Garcia
 
